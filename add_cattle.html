@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Cattle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+            margin: 0;
+        }
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .form-container h2, .form-container h3 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+        .form-container label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: block;
+            color: #555;
+        }
+        .form-container input, .form-container select, .form-container textarea {
+            width: calc(100% - 24px); /* Adjust width accounting for padding */
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+        .form-container input:focus, .form-container select:focus, .form-container textarea:focus {
+            border-color: #4caf50;
+            outline: none;
+        }
+        .form-container button {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+        .record-section {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .record-entry {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .record-entry input {
+            width: calc(100% - 24px);
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        .add-record-btn {
+            background-color: #007bff;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .add-record-btn:hover {
+            background-color: #0056b3;
+        }
+        /* Form grid for better alignment */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 15px;
+            }
+            .form-container button {
+                font-size: 14px;
+            }
+            .record-section {
+                padding: 15px;
+            }
+            .record-entry {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Add New Cattle</h2>
+        <form action="/submit-cattle" method="POST" class="form-grid">
+            <label for="cattle-id">Cattle ID</label>
+            <input type="text" id="cattle-id" name="cattle-id" required>
+            
+            <label for="rfid">RFID Tag</label>
+            <input type="text" id="rfid" name="rfid" required>
+            
+            
+            
+            <label for="breed">Breed</label>
+            <select id="breed" name="breed" required>
+                <option value="holstein">Holstein</option>
+                <option value="jersey">Jersey</option>
+                <option value="angus">Angus</option>
+                <option value="brahman">Brahman</option>
+                <option value="charolais">Charolais</option>
+                <option value="guernsey">Guernsey</option>
+                <option value="hereford">Hereford</option>
+                <option value="simmental">Simmental</option>
+                <option value="limousin">Limousin</option>
+                <option value="sahiwal">Sahiwal</option>
+            </select>
+
+            
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" required>
+            
+            <label for="sex">Sex</label>
+            <select id="sex" name="sex" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+            
+            <label for="animal-type">Type of Animal</label>
+            <select id="animal-type" name="animal-type" required>
+                <option value="cow">Cow</option>
+                <option value="bull">Bull</option>
+                <option value="heifer">Heifer</option>
+            </select>
+            
+            <label for="weight">Weight (kg)</label>
+            <input type="number" id="weight" name="weight" required>
+            
+            <label for="price">Price (Ksh)</label>
+            <input type="number" id="price" name="price" required>
+            
+            <label for="images">Upload Images</label>
+            <input type="file" id="images" name="images" accept="image/*" multiple>
+
+            <!-- Vaccination Records Section -->
+            <div class="record-section" id="vaccination-records-section">
+                <h3>Vaccination Records</h3>
+                <div id="vaccination-entries"></div>
+                <button type="button" class="add-record-btn" onclick="addVaccinationRecord()">Add Vaccination Record</button>
+            </div>
+
+            <!-- Treatment Records Section -->
+            <div class="record-section" id="treatment-records-section">
+                <h3>Treatment Records</h3>
+                <div id="treatment-entries"></div>
+                <button type="button" class="add-record-btn" onclick="addTreatmentRecord()">Add Treatment Record</button>
+            </div>
+
+            <label for="other-health-notes">Other Health Notes</label>
+            <textarea id="other-health-notes" name="other-health-notes" rows="4"></textarea>
+
+            <button type="button" onclick="redirectToIndex()">Add Cattle</button>
+        </form>
+    </div>
+
+    <script>
+        let vaccinationCounter = 0;
+        let treatmentCounter = 0;
+
+        function addVaccinationRecord() {
+            const container = document.getElementById('vaccination-entries');
+            const recordDiv = document.createElement('div');
+            recordDiv.className = 'record-entry';
+            recordDiv.innerHTML = `
+                <label for="vaccine-name-${vaccinationCounter}">Vaccine Name</label>
+                <input type="text" id="vaccine-name-${vaccinationCounter}" name="vaccine-name-${vaccinationCounter}" required>
+                
+                <label for="vaccine-date-${vaccinationCounter}">Date Administered</label>
+                <input type="date" id="vaccine-date-${vaccinationCounter}" name="vaccine-date-${vaccinationCounter}" required>
+                
+                <label for="batch-number-${vaccinationCounter}">Batch Number</label>
+                <input type="text" id="batch-number-${vaccinationCounter}" name="batch-number-${vaccinationCounter}" required>
+            `;
+            container.appendChild(recordDiv);
+            vaccinationCounter++;
+        }
+
+        function addTreatmentRecord() {
+            const container = document.getElementById('treatment-entries');
+            const recordDiv = document.createElement('div');
+            recordDiv.className = 'record-entry';
+            recordDiv.innerHTML = `
+                <label for="illness-${treatmentCounter}">Illness/Condition</label>
+                <input type="text" id="illness-${treatmentCounter}" name="illness-${treatmentCounter}" required>
+                
+                <label for="treatment-${treatmentCounter}">Treatment Administered</label>
+                <input type="text" id="treatment-${treatmentCounter}" name="treatment-${treatmentCounter}" required>
+                
+                <label for="treatment-date-${treatmentCounter}">Date of Treatment</label>
+                <input type="date" id="treatment-date-${treatmentCounter}" name="treatment-date-${treatmentCounter}" required>
+                
+                <label for="medication-${treatmentCounter}">Medication/Dosage</label>
+                <input type="text" id="medication-${treatmentCounter}" name="medication-${treatmentCounter}" required>
+            `;
+            container.appendChild(recordDiv);
+            treatmentCounter++;
+        }
+
+        function redirectToIndex() {
+            window.location.href = "index.php";
+        }
+
+        // Add initial record entries
+        addVaccinationRecord();
+        addTreatmentRecord();
+    </script>
+</body>
+</html>

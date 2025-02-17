@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaccination Records</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            background: #f0f2f5;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: #1b5e20;
+            min-height: 100vh;
+            color: white;
+            padding: 20px 0;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid #2e7d32;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 20px 0;
+            font-size: 18px;
+        }
+
+        .nav-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover {
+            background: rgb(89, 146, 91);
+            transition: background-color 0.3s ease;
+            font-size: 18px;
+            padding: 12px 20px;
+            transform: scale(1.05);
+            width: 98%;
+        }
+
+        .nav-item.active {
+            background: #2e7d32;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #f4f7fc;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: #4CAF50;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        table thead {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .general-notes {
+            margin-top: 30px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .general-notes h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .general-notes p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            flex: 1;
+            text-align: center;
+            border: none;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Livestock Management</h2>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="index.php">
+                    <i class="fas fa-dashboard"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="cattle_records.php">
+                    <i class="fas fa-cow"></i>
+                    Livestock Records
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="rfid_management_records.html">
+                    <i class="fas fa-tag"></i>
+                    RFID Records
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="sale_records.html">
+                    <i class="fas fa-chart-line"></i>
+                    Sale Records
+                </a>
+            </li>
+            <li class="nav-item active">
+                <a href="vaccination_reports.html">
+                    <i class="fas fa-syringe"></i>
+                    Vaccination Records
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="pregnancy_records.html">
+                    <i class="fas fa-baby"></i>
+                    Pregnancy Records
+                </a>
+            </li>
+            <li class="nav-item">
+                <i class="fas fa-user"></i>
+                Profile
+            </li>
+            <li class="nav-item">
+                <i class="fas fa-cog"></i>
+                Settings
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <h1>Vaccination Records</h1>
+
+            <div class="vaccination-record">
+                <table id="vaccinationTable">
+                    <thead>
+                        <tr>
+                            <th>RFID</th>
+                            <th>Image</th>
+                            <th>Vaccine Name</th>
+                            <th>Date Administered</th>
+                            <th>Batch Number</th>
+                            <th>Dosage</th>
+                            <th>Route of Administration</th>
+                            <th>Administered By</th>
+                            <th>Next Dose</th>
+                            <th>Health Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>123456789</td>
+                            <td><img src="images/img.jpg" alt="Image" width="50" height="50"></td>
+                            <td>FMD Vaccine</td>
+                            <td>2024-01-20</td>
+                            <td>BN2345</td>
+                            <td>5ml</td>
+                            <td>Intramuscular</td>
+                            <td>Dr. John Doe</td>
+                            <td>2025-01-20</td>
+                            <td>Healthy, no side effects</td>
+                        </tr>
+                        <tr>
+                            <td>987654321</td>
+                            <td><img src="images/img5.jpg" alt="Image" width="50" height="50"></td>
+                            <td>Brucellosis Vaccine</td>
+                            <td>2024-03-15</td>
+                            <td>BN5678</td>
+                            <td>10ml</td>
+                            <td>Subcutaneous</td>
+                            <td>Dr. Jane Smith</td>
+                            <td>2025-03-15</td>
+                            <td>Minor swelling at injection site</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="general-notes">
+                    <h3>General Health Notes</h3>
+                    <p>The animal is in good health, with no ongoing treatments. All vaccinations are up to date.</p>
+                </div>
+
+                <div class="btn-container">
+                    <button id="downloadBtn" class="btn">Download CSV</button>
+                    <button id="downloadPdfBtn" class="btn">Download PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to download the table data as CSV
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            let table = document.getElementById('vaccinationTable');
+            let rows = table.rows;
+            let csvContent = "";
+
+            for (let i = 0; i < rows.length; i++) {
+                let cells = rows[i].cells;
+                let rowData = [];
+                for (let j = 0; j < cells.length; j++) {
+                    rowData.push(cells[j].innerText);
+                }
+                csvContent += rowData.join(",") + "\n";
+            }
+
+            let link = document.createElement('a');
+            link.href = "data:text/csv;charset=utf-8," + encodeURI(csvContent);
+            link.target = "_blank";
+            link.download = "vaccination_records.csv";
+            link.click();
+        });
+
+        // Function to download the table data as PDF
+        document.getElementById('downloadPdfBtn').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.text("Vaccination Records", 14, 10);
+            doc.autoTable({ 
+                html: '#vaccinationTable',
+                startY: 20, 
+                theme: 'striped'
+            });
+
+            doc.save('vaccination_records.pdf');
+        });
+    </script>
+</body>
+</html>

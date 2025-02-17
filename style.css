@@ -1,0 +1,79 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.cattle-info {
+    margin-top: 20px;
+}
+
+.cattle-header {
+    background-color: #f1f1f1;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.cattle-details, .health-records {
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f8f8f8;
+    width: 30%;
+}
+
+.cattle-images {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.cattle-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.health-status, .vaccination-records, .treatment-records, .other-health-notes {
+    background-color: #fafafa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+h3, h4 {
+    color: #333;
+}
+
+h3 {
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}

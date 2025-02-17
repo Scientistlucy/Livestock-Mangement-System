@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Livestock Marketplace</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: #f8f9fa;
+    }
+
+    header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 10;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      transition: color 0.3s;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-links a:hover {
+      background: #28a745;
+      transform: translateY(-2px);
+    }
+
+    .icon-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #e74c3c;
+      color: white;
+      border-radius: 50%;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.8rem;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .hero {
+      min-height: 90vh;
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                  url('images/img19.png') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .search-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 10px;
+      margin: 2rem 0;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .search-select select {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      background: white;
+      color: #333;
+      cursor: pointer;
+      min-width: 150px;
+    }
+
+    .search-btn {
+      padding: 0.8rem 2rem;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .search-btn:hover {
+      background: #218838;
+    }
+
+    .browse-listings {
+      background: #f39c12;
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s;
+      margin-top: 1rem;
+      display: inline-block;
+    }
+
+    .browse-listings:hover {
+      background: #e67e22;
+    }
+
+    .featured-section {
+      padding: 4rem 2rem;
+      background: white;
+    }
+
+    .featured-section h2 {
+      text-align: center;
+      margin-bottom: 3rem;
+      font-size: 2.5rem;
+      color: #333;
+    }
+
+    .listings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .listing-card {
+      border: 1px solid #eee;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      background: white;
+    }
+
+    .listing-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .listing-image {
+      position: relative;
+      height: 250px;
+      overflow: hidden;
+    }
+
+    .listing-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .listing-card:hover .listing-image img {
+      transform: scale(1.05);
+    }
+
+    .favorite-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+
+    .favorite-btn:hover {
+      transform: scale(1.1);
+      background: #ffecec;
+    }
+
+    .listing-details {
+      padding: 1.5rem;
+    }
+
+    .listing-details h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+
+    .price {
+      color: #28a745;
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .location {
+      color: #666;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .card-btn {
+      padding: 0.8rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+
+    
+    .save-btn {
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    .save-btn:hover {
+      background: #e2e6ea;
+    }
+
+    .view-details-btn {
+      display: block;
+      width: 100%;
+      padding: 0.8rem;
+      background: #007bff;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    .view-details-btn:hover {
+      background: #0056b3;
+    }
+
+
+    .featured-section {
+  padding: 6rem 2rem;
+  background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+}
+
+.featured-section h2 {
+  text-align: center;
+  margin-bottom: 3rem;
+  font-size: 2.8rem;
+  color: #2d3436;
+  position: relative;
+  padding-bottom: 1.5rem;
+}
+
+.featured-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: #28a745;
+  border-radius: 2px;
+}
+
+.listings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.listing-card {
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.listing-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.listing-image {
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+}
+
+.listing-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.4));
+}
+
+.listing-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.listing-card:hover .listing-image img {
+  transform: scale(1.1);
+}
+
+.listing-details {
+  padding: 1.8rem;
+}
+
+.listing-details h3 {
+  font-size: 1.8rem;
+  margin-bottom: 0.8rem;
+  color: #2d3436;
+  font-weight: 600;
+}
+
+.price {
+  color: #303130;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.price::before {
+ 
+  font-size: 1.2rem;
+}
+
+.location {
+  color: #636e72;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.card-btn {
+  padding: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+
+.save-btn {
+  background: #f1f2f6;
+  color: #2d3436;
+}
+
+.save-btn:hover {
+  background: #e4e5e9;
+  transform: translateY(-2px);
+}
+
+.view-details-btn {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  background: #007bff;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 8px;
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.view-details-btn:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Add subtle animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.listing-card {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.listing-card:nth-child(2) { animation-delay: 0.1s; }
+.listing-card:nth-child(3) { animation-delay: 0.2s; }
+.listing-card:nth-child(4) { animation-delay: 0.3s; }
+
+:root {
+  /* Primary Colors */
+  --primary-color: #3498db;      /* Blue - Primary brand color */
+  --secondary-color: #2ecc71;    /* Green - For CTAs and important actions */
+  
+  /* Neutral Colors */
+  --neutral-dark: #2c3e50;       /* Dark blue-gray for text */
+  --neutral-medium: #7f8c8d;     /* Medium gray for secondary text */
+  --neutral-light: #ecf0f1;      /* Light gray for backgrounds */
+  
+  /* Accent Colors */
+  --accent-price: #e67e22;       /* Orange for prices */
+  --accent-save: #e74c3c;        /* Red for save/heart icons */
+  
+  /* Background Colors */
+  --bg-primary: #ffffff;         /* White background */
+  --bg-secondary: #f8f9fa;       /* Light gray background */
+}
+
+.featured-section {
+  background: var(--bg-secondary);
+  padding: 6rem 2rem;
+}
+
+.featured-section h2 {
+  color: var(--neutral-dark);
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.featured-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: var(--primary-color);
+}
+
+.listing-card {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.listing-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+}
+
+.listing-details h3 {
+  color: var(--neutral-dark);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+
+.price {
+ 
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.location {
+  color: var(--neutral-medium);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-btn.add-cart-btn {
+  background: #28a745 !important; /* Green color */
+  color: white;
+}
+
+.card-btn.add-cart-btn:hover {
+  background: #218838 !important;
+}
+
+.card-btn.save-btn {
+  background: var(--neutral-light);
+  color: var(--neutral-dark);
+  border: 1px solid #e0e0e0;
+}
+
+.card-btn.save-btn:hover {
+  background: #e0e0e0;
+}
+
+.card-btn.save-btn i {
+  color: var(--accent-save);
+}
+
+.view-details-btn {
+  background: #007bff !important; /* Blue color */
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+}
+
+.view-details-btn:hover {
+  background: #0056b3 !important;
+}
+
+/* Badge Styling */
+.price-badge {
+  background: rgba(230, 126, 34, 0.1);
+  color: var(--accent-price);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.location-badge {
+  background: rgba(52, 152, 219, 0.1);
+  color: var(--primary-color);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+
+/* Updated Footer Styles */
+footer {
+  background: #f8f9fa;
+  color: #2c3e50;
+  padding: 4rem 2rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+}
+
+.footer-section h3 {
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  color: #28a745;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.footer-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: #28a745;
+}
+
+.footer-section ul {
+  list-style: none;
+}
+
+.footer-section ul li {
+  margin-bottom: 1rem;
+}
+
+.footer-section ul li a {
+  color: #2c3e50;
+  text-decoration: none;
+  transition: color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-section ul li a:hover {
+  color: #28a745;
+}
+
+.social-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.social-links a {
+  color: #2c3e50;
+  text-decoration: none;
+  font-size: 1.5rem;
+  transition: color 0.3s;
+}
+
+.social-links a:hover {
+  color: #28a745;
+}
+
+/* Updated Listing Card Styles */
+.listing-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.listing-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+.location {
+  color: #2c3e50;
+  opacity: 0.8;
+}
+
+
+ /* Updated location icon style in listing cards */
+ .listing-details .location {
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .listing-details .location::before {
+            font-family: "Font Awesome 5 Free";
+            content: "\f3c5"; /* Map marker icon */
+            font-weight: 900;
+            color: #2c3e50;
+        }
+
+        /* Remove the emoji icon */
+        .listing-details .location > span:first-child {
+            display: none;
+        }
+
+        /* Footer specific styles - keeping the existing icon styles */
+        footer .footer-section ul li i.fa-map-marker-alt {
+            color: #2c3e50;
+        }
+
+
+.card-btn.save-btn {
+  background: #f8f9fa;
+  color: #2c3e50;
+  border: 1px solid #e0e0e0;
+}
+
+.card-btn.save-btn:hover {
+  background: #e9ecef;
+}
+
+.card-btn.save-btn i {
+  color: #28a745;
+}
+
+
+
+
+/* Replace heart icon with bookmark */
+.save-btn i.fa-heart {
+  display: none;
+}
+
+.save-btn i.fa-heart::before {
+  content: "\f02e"; /* Bookmark icon */
+}
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <!-- Header is placed inside the hero section to allow the background image to show behind it -->
+    <header>
+      <div class="logo">
+        <img src="/api/placeholder/120/40" alt="Logo" />
+      </div>
+      <nav class="nav-links">
+        <a href="#"><i class="fas fa-home"></i> Home</a>
+        <a href="#"><i class="fas fa-list"></i> Listings</a>
+        <a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        <a href="#" class="icon-container">
+          <i class="fas fa-heart"></i> Saved
+          <span class="nav-badge">3</span>
+        </a>
+        <a href="#" class="icon-container">
+          <i class="fas fa-shopping-cart"></i> Cart
+          <span class="nav-badge">2</span>
+        </a>
+        <a href="#"><i class="fas fa-headset"></i> Support</a>
+      </nav>
+    </header>
+
+    <h1>Buy Quality Livestock Directly<br />from Farmers</h1>
+    <div class="search-container">
+        <form class="search-form">
+          <div class="search-select">
+            <select id="livestock-select">
+              <option value="">Livestock</option>
+              <option value="cattle">Cattle</option>
+              <option value="sheep">Sheep</option>
+              <option value="goats">Goats</option>
+            </select>
+          </div>
+      
+          <div class="search-select">
+            <select id="breed-select">
+              <option value="">Breed</option>
+              <option value="holstein">Holstein</option>
+              <option value="angus">Angus</option>
+              <option value="hereford">Hereford</option>
+            </select>
+          </div>
+      
+          <div class="search-select">
+            <select id="class-select">
+              <option value="">Class</option>
+              <option value="dairy">Dairy</option>
+              <option value="beef">Beef</option>
+              <option value="dual">Dual Purpose</option>
+            </select>
+          </div>
+      
+          <div class="search-select">
+            <select id="gender-select">
+              <option value="">Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+      
+          <div class="search-select">
+            <select id="weight-select">
+              <option value="">Weight (kg)</option>
+              <option value="under_200">Under 200 kg</option>
+              <option value="200_500">200 - 500 kg</option>
+              <option value="over_500">Over 500 kg</option>
+            </select>
+          </div>
+      
+          <div class="search-select">
+            <select id="price-select">
+              <option value="">Price Range (Ksh   )</option>
+              <option value="under_50000">Under Ksh    50,000</option>
+              <option value="50000_100000">Ksh    50,000 - Ksh    100,000</option>
+              <option value="over_100000">Over Ksh    100,000</option>
+            </select>
+          </div>
+      
+          <button type="submit" class="search-btn">Search</button>
+        </form>
+      </div>
+      
+    <a href="#" class="browse-listings">Browse Listings</a>
+  </section>
+
+  <section class="featured-section">
+    <h2>Featured Cattle Listings</h2>
+    <div class="listings-grid">
+      <!-- Listing 1 -->
+      <div class="listing-card">
+        <div class="listing-image">
+          <img src="images/img9.avif" alt="Boran Cattle" />
+        </div>
+        <div class="listing-details">
+          <h3>Boran</h3>
+          <div class="price">Ksh   100,000/head</div>
+          <div class="location"> Lakipia</div>
+          <div class="card-actions">
+            <button class="card-btn add-cart-btn">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+            <button class="card-btn save-btn">
+              <i class="fas fa-heart"></i>
+              Save
+            </button>
+          </div>
+          <a href="animal_details.html" class="view-details-btn">
+            <i class="fas fa-eye"></i>
+            View Details
+          </a>
+        </div>
+      </div>
+
+      <!-- Listing 2 -->
+      <div class="listing-card">
+        <div class="listing-image">
+          <img src="images/img11.avif" alt="Sahiwal Cattle" />
+        </div>
+        <div class="listing-details">
+          <h3>Sahiwal</h3>
+          <div class="price">Ksh   80,000/head</div>
+          <div class="location"> Lakipia</div>
+          <div class="card-actions">
+            <button class="card-btn add-cart-btn">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+            <button class="card-btn save-btn">
+              <i class="fas fa-heart"></i>
+              Save
+            </button>
+          </div>
+          <a href="animal_details.html" class="view-details-btn">
+            <i class="fas fa-eye"></i>
+            View Details
+          </a>
+        </div>
+      </div>
+
+      <!-- Listing 3 -->
+      <div class="listing-card">
+        <div class="listing-image">
+          <img src="images/img6.jpg" alt="Boran Cattle" />
+        </div>
+        <div class="listing-details">
+          <h3>Boran</h3>
+          <div class="price">Ksh   100,000/head</div>
+          <div class="location"> Lakipia</div>
+          <div class="card-actions">
+            <button class="card-btn add-cart-btn">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+            <button class="card-btn save-btn">
+              <i class="fas fa-heart"></i>
+              Save
+            </button>
+          </div>
+          <a href="animal_details.html" class="view-details-btn">
+            <i class="fas fa-eye"></i>
+            View Details
+          </a>
+        </div>
+      </div>
+
+      <!-- Listing 4 -->
+      <div class="listing-card">
+        <div class="listing-image">
+          <img src="images/img6.jpg" alt="Boran Cattle" />
+        </div>
+        <div class="listing-details">
+          <h3>Boran</h3>
+          <div class="price">Ksh   100,000/head</div>
+          <div class="location"> Lakipia</div>
+          <div class="card-actions">
+            <button class="card-btn add-cart-btn">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+            <button class="card-btn save-btn">
+              <i class="fas fa-heart"></i>
+              Save
+            </button>
+          </div>
+          <a href="animal_details.html" class="view-details-btn">
+            <i class="fas fa-eye"></i>
+            View Details
+          </a>
+        </div>
+        
+      </div>
+
+      <!-- Listing 5 -->
+      <div class="listing-card">
+        <div class="listing-image">
+          <img src="images/img6.jpg" alt="Boran Cattle" />
+        </div>
+        <div class="listing-details">
+          <h3>Boran</h3>
+          <div class="price">Ksh   100,000/head</div>
+          <div class="location"> Lakipia</div>
+          <div class="card-actions">
+            <button class="card-btn add-cart-btn">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+            <button class="card-btn save-btn">
+              <i class="fas fa-heart"></i>
+              Save
+            </button>
+          </div>
+          <a href="animal_details.html" class="view-details-btn">
+            <i class="fas fa-eye"></i>
+            View Details
+          </a>
+        </div>
+      </div>
+
+      <!-- Listing 6 -->
+      <div class="listing-card">
+        <div class="listing-image">
+          <img src="images/img6.jpg" alt="Boran Cattle" />
+        </div>
+        <div class="listing-details">
+          <h3>Boran</h3>
+          <div class="price">Ksh   100,000/head</div>
+          <div class="location"> Lakipia</div>
+          <div class="card-actions">
+            <button class="card-btn add-cart-btn">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+            <button class="card-btn save-btn">
+              <i class="fas fa-heart"></i>
+              Save
+            </button>
+          </div>
+          <a href="animal_details.html" class="view-details-btn">
+            <i class="fas fa-eye"></i>
+            View Details
+          </a>
+        </div>
+      </div>
+
+      <!-- Listing 7 -->
+      <div class="listing-card">
+        <div class="listing-image">
+          <img src="images/img6.jpg" alt="Boran Cattle" />
+        </div>
+        <div class="listing-details">
+          <h3>Boran</h3>
+          <div class="price">Ksh   100,000/head</div>
+          <div class="location"> Lakipia</div>
+          <div class="card-actions">
+            <button class="card-btn add-cart-btn">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+            <button class="card-btn save-btn">
+              <i class="fas fa-heart"></i>
+              Save
+            </button>
+          </div>
+          <a href="animal_details.html" class="view-details-btn">
+            <i class="fas fa-eye"></i>
+            View Details
+          </a>
+        </div>
+      </div>
+
+      <!-- Listing 8 -->
+      <div class="listing-card">
+        <div class="listing-image">
+          <img src="images/img6.jpg" alt="Boran Cattle" />
+        </div>
+        <div class="listing-details">
+          <h3>Boran</h3>
+          <div class="price">Ksh   100,000/head</div>
+          <div class="location"> Lakipia</div>
+          <div class="card-actions">
+            <button class="card-btn add-cart-btn">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+            <button class="card-btn save-btn">
+              <i class="fas fa-heart"></i>
+              Save
+            </button>
+          </div>
+          <a href="animal_details.html" class="view-details-btn">
+            <i class="fas fa-eye"></i>
+            View Details
+          </a>
+        </div>
+      </div>
+
+
+      <div class="listing-card">
+        <div class="listing-image">
+          <img src="images/img6.jpg" alt="Boran Cattle" />
+        </div>
+        <div class="listing-details">
+          <h3>Boran</h3>
+          <div class="price">Ksh   100,000/head</div>
+          <div class="location"> Lakipia</div>
+          <div class="card-actions">
+            <button class="card-btn add-cart-btn">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+            <button class="card-btn save-btn">
+              <i class="fas fa-heart"></i>
+              Save
+            </button>
+          </div>
+          <a href="animal_details.html" class="view-details-btn">
+            <i class="fas fa-eye"></i>
+            View Details
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+
+
+    
+  </section>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#"><i class="fas fa-book"></i> FAQ</a></li>
+          <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
+          <li><a href="#"><i class="fas fa-file-alt"></i> Terms and Conditions</a></li>
+          <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+        <ul>
+          <li><i class="fas fa-phone"></i> +254712345678</li>
+          <li><i class="fas fa-envelope"></i> info@example.com</li>
+          <li><i class="fas fa-map-marker-alt"></i> 123 Market Rd</li>
+        </ul>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

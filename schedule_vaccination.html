@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Vaccination</title>
+    <style>
+        body, h1, table, input, button, select {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #e8f5e9; /* Light green background */
+            color: #2e7d32; /* Dark green text */
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1b5e20; /* Deep green title */
+        }
+
+        .form-section {
+            text-align: center;
+            margin-bottom: 20px;
+            background: #c8e6c9; /* Soft green form background */
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        input, select {
+            padding: 8px;
+            margin-right: 10px;
+            border: 1px solid #388e3c;
+            border-radius: 4px;
+            width: 200px;
+            background-color: #ffffff;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #388e3c; /* Dark green button */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2e7d32;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #388e3c; /* Dark green header */
+            color: white;
+        }
+
+       
+
+        tr:hover {
+            background-color: #c8e6c9; /* Soft green hover */
+        }
+
+        .view-details-btn {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+
+        .view-details-btn:hover {
+            background-color: #1565c0;
+        }
+
+        .export-section {
+            margin: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Schedule Vaccination</h1>
+
+    <div class="form-section">
+        <label for="cattle-id">Cattle ID:</label>
+        <input type="text" id="cattle-id" placeholder="Enter Cattle ID">
+
+        <label for="vaccine">Vaccine:</label>
+        <input type="text" id="vaccine" placeholder="Enter Vaccine Name">
+
+        <label for="date">Date:</label>
+        <input type="date" id="date">
+
+        <label for="reason">Reason:</label>
+        <input type="text" id="reason" placeholder="Enter Reason for Vaccination">
+
+        <button onclick="scheduleVaccination()">Schedule</button>
+    </div>
+
+    <table id="vaccination-table">
+        <thead>
+            <tr>
+                <th>Cattle ID</th>
+                <th>Vaccine</th>
+                <th>Date</th>
+                <th>Reason</th>
+                <th>Image</th>
+                
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- Scheduled vaccinations will be added dynamically -->
+            <tr>
+                <td>12345</td>
+                <td>Anthrax</td>
+                <td>2025-01-30</td>
+                <td>Routine Vaccination to prevent outbreaks and ensure herd immunity</td>
+               
+            </tr>
+            <tr>
+                <td>67890</td>
+                <td>Rabies</td>
+                <td>2025-02-02</td>
+                <td>Vaccination for Rabies Prevention and to comply with health regulations</td>
+               
+            </tr>
+            <!-- Other rows here -->
+        </tbody>
+    </table>
+
+    <div class="export-section">
+        <label for="export-format">Export Vaccination Data:</label>
+        <select id="export-format">
+            <option value="excel">Export as Excel</option>
+            <option value="pdf">Export as PDF</option>
+        </select>
+        <button onclick="exportData()">Export</button>
+    </div>
+
+    <script>
+        function scheduleVaccination() {
+            let cattleId = document.getElementById('cattle-id').value;
+            let vaccine = document.getElementById('vaccine').value;
+            let date = document.getElementById('date').value;
+            let reason = document.getElementById('reason').value;
+            
+            if (!cattleId || !vaccine || !date || !reason) {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            let table = document.getElementById('table-body');
+            let row = table.insertRow();
+            row.insertCell(0).innerText = cattleId;
+            row.insertCell(1).innerText = vaccine;
+            row.insertCell(2).innerText = date;
+            row.insertCell(3).innerText = reason;
+            let actionCell = row.insertCell(4);
+            let viewButton = document.createElement('button');
+            viewButton.innerText = 'View Details';
+            viewButton.classList.add('view-details-btn');
+            viewButton.onclick = function() { viewDetails(cattleId); };
+            actionCell.appendChild(viewButton);
+        }
+
+        function viewDetails(cattleId) {
+            window.location.href = `history.html?cattleId=${cattleId}`; // Redirect to the history page with cattleId as a query parameter
+        }
+
+        function exportData() {
+            let format = document.getElementById('export-format').value;
+            if (format === 'excel') {
+                exportToExcel();
+            } else if (format === 'pdf') {
+                exportToPDF();
+            }
+        }
+
+        function exportToExcel() {
+            let table = document.getElementById('vaccination-table');
+            let html = table.outerHTML;
+            let a = document.createElement('a');
+            a.href = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
+            a.download = 'vaccination_schedule.xls';
+            a.click();
+        }
+
+        function exportToPDF() {
+            let doc = new jsPDF();
+            doc.autoTable({ html: '#vaccination-table' });
+            doc.save('vaccination_schedule.pdf');
+        }
+    </script>
+
+    <!-- Include jsPDF and jsPDF-AutoTable for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+</body>
+</html>

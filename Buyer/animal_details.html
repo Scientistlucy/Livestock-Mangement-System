@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livestock Information</title>
+    <style>
+        /* Existing CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .Livestock-info {
+            margin-top: 20px;
+        }
+
+        .Livestock-header {
+            background-color: #f1f1f1;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .Livestock-details, .health-records {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th, table td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f8f8f8;
+            width: 30%;
+        }
+
+        .Livestock-images {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .Livestock-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .health-status, .vaccination-records, .treatment-records, .other-health-notes {
+            background-color: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        h3, h4 {
+            color: #333;
+        }
+
+        h3 {
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .graph-container {
+            margin-top: 30px;
+        }
+
+        .main-image-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+        }
+
+        .prev-button {
+            left: -20px;
+        }
+
+        .next-button {
+            right: -20px;
+        }
+
+        .nav-button:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .main-Livestock-image {
+            max-width: 100%;
+            height: 400px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .thumbnail-strip {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .thumbnail {
+            width: 120px;
+            height: 90px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 4px;
+        }
+
+        .thumbnail.active {
+            border-color: #2196F3;
+        }
+
+        .thumbnail:hover {
+            opacity: 0.8;
+        }
+
+        /* Chat Widget Styles */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chat-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .chat-button:hover {
+            background-color: #0056b3;
+        }
+
+        .chat-window {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .chat-body {
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .chat-input button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .chat-input button:hover {
+            background-color: #0056b3;
+        }
+
+        /* New Styles for Seller Information and Other Cattle */
+        .seller-info, .other-cattle {
+            background-color: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .seller-info h3, .other-cattle h3 {
+            margin-top: 0;
+        }
+
+        .other-cattle-list {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .other-cattle-item {
+            width: 150px;
+            text-align: center;
+        }
+
+        .other-cattle-item img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .other-cattle-item p {
+            margin: 5px 0;
+        }
+
+        .image-actions {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .image-actions button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .image-actions button:hover {
+            background-color: #0056b3;
+        }
+
+
+        .fullscreen-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;}
+
+.fullscreen-image {
+ 
+}
+
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.expand-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: white;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.expand-button:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+
+
+.fullscreen-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .fullscreen-image-wrapper {
+            position: relative;
+            width: 90%;
+            height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .fullscreen-image {
+            max-width: 200%;
+            max-height: 100vh;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+
+        .fullscreen-nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+            z-index: 1001;
+        }
+
+        .fullscreen-nav-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .fullscreen-prev {
+            left: 20px;
+        }
+
+        .fullscreen-next {
+            right: 20px;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+            z-index: 1001;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .fullscreen-thumbnails {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+
+        .fullscreen-thumbnail {
+            width: 60px;
+            height: 45px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .fullscreen-thumbnail.active {
+            border-color: #fff;
+        }
+
+        .fullscreen-thumbnail:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Livestock Information</h1>
+        <div class="Livestock-info">
+            <!-- Existing content -->
+            <div class="Livestock-header">
+                <h2>Livestock ID: 12345</h2>
+                <p><strong>RFID Tag:</strong> 987654321</p>
+            </div>
+
+            <div class="Livestock-details">
+                <h3>Basic Information</h3>
+                <table>
+                    <tr>
+                        <th>Breed:</th>
+                        <td>Holstein</td>
+                    </tr>
+                    <tr>
+                        <th>Age:</th>
+                        <td>2 yrs</td>
+                    </tr>
+                    <tr>
+                        <th>Gender:</th>
+                        <td>Female</td>
+                    </tr>
+                    <tr>
+                        <th>Type of Animal:</th>
+                        <td>Cow</td>
+                    </tr>
+                    <tr>
+                        <th> Estimated Weight:</th>
+                        <td>650 kg</td>
+                    </tr>
+                    <tr>
+                        <th>Price:</th>
+                        <td>Ksh 80,000</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="Livestock-images">
+                <h3>Images of the Livestock</h3>
+                <div class="main-image-container">
+                    <button class="nav-button prev-button">❮</button>
+                    <div style="position: relative;">
+                        <img src="images/img.jpg" alt="Main Livestock Image" class="main-Livestock-image" id="mainImage">
+                        <button class="expand-button" onclick="openFullscreen()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="nav-button next-button">❯</button>
+                </div>
+                <div class="thumbnail-strip">
+                    <img src="images/img.jpg" alt="Livestock thumbnail 1" class="thumbnail active" onclick="changeMainImage(this.src)">
+                    <img src="images/img2.jpg" alt="Livestock thumbnail 2" class="thumbnail" onclick="changeMainImage(this.src)">
+                    <img src="images/img3.jpg" alt="Livestock thumbnail 3" class="thumbnail" onclick="changeMainImage(this.src)">
+                    <img src="images/img4.jpg" alt="Livestock thumbnail 4" class="thumbnail" onclick="changeMainImage(this.src)">
+                </div>
+                <div class="image-actions">
+                    <button onclick="shareImage()">Share Image</button>
+                    <button onclick="downloadImage()">Download Image</button>
+                </div>
+            </div>
+            
+            <!-- Add this div at the end of your body tag, before the scripts -->
+            <div class="fullscreen-container" id="fullscreenContainer">
+                <button class="close-button" onclick="closeFullscreen()">×</button>
+                <button class="fullscreen-nav-button fullscreen-prev" onclick="navigateFullscreen(-1)">❮</button>
+                <div class="fullscreen-image-wrapper">
+                    <img src="" alt="Fullscreen Livestock Image" class="fullscreen-image" id="fullscreenImage">
+                </div>
+                <button class="fullscreen-nav-button fullscreen-next" onclick="navigateFullscreen(1)">❯</button>
+                <div class="fullscreen-thumbnails" id="fullscreenThumbnails">
+                    <!-- Thumbnails will be dynamically added here -->
+                </div>
+            </div>
+
+            <div class="seller-info">
+                <h3>Seller Information</h3>
+                <p><strong>Name:</strong> John Doe</p>
+                <p><strong>Contact:</strong> +123 456 7890</p>
+                <p><strong>Email:</strong> john.doe@example.com</p>
+                <p><strong>Location:</strong> Nairobi, Kenya</p>
+            </div>
+
+            <div class="other-cattle">
+                <h3><a href="farmer-livestock.html?id=john-doe" class="seller-livestock-link">Other Livestock from This Seller</a></h3>
+            </div>
+            
+
+         
+            <div class="health-records">
+                <h3>Health Records</h3>
+                <div class="health-status">
+                    <p><strong>General Health Status:</strong> Healthy</p>
+                </div>
+
+                <div class="vaccination-records">
+                    <h4>Vaccination Records</h4>
+                    <table>
+                        <tr>
+                            <th>Vaccine Name:</th>
+                            <td>Rabies</td>
+                        </tr>
+                        <tr>
+                            <th>Date Administered:</th>
+                            <td>15-06-2023</td>
+                        </tr>
+                        <tr>
+                            <th>Batch Number:</th>
+                            <td>AB12345</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="treatment-records">
+                    <h4>Treatment Records</h4>
+                    <table>
+                        <tr>
+                            <th>Illness/Condition:</th>
+                            <td>Foot Rot</td>
+                        </tr>
+                        <tr>
+                            <th>Treatment Administered:</th>
+                            <td>Antibiotics</td>
+                        </tr>
+                        <tr>
+                            <th>Date of Treatment:</th>
+                            <td>10-09-2023</td>
+                        </tr>
+                        <tr>
+                            <th>Medication Name/Dosage:</th>
+                            <td>Penicillin - 10mg</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="other-health-notes">
+                    <h4>Other Health Notes</h4>
+                    <p>She is healthy and has recovered well from the foot rot treatment. No further issues.</p>
+                </div>
+            </div>
+
+            <!-- Graph container -->
+            <div class="graph-container">
+                <h3>Weight Progress Over Time</h3>
+                <canvas id="weightGraph" width="400" height="200"></canvas>
+            </div>
+           
+        </div>
+    </div>
+
+    <!-- Chat Widget -->
+    <div class="chat-widget">
+        <button class="chat-button" onclick="toggleChat()">💬</button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">Chat Support</div>
+            <div class="chat-body" id="chatBody">
+                <!-- Chat messages will appear here -->
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Type a message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Existing JavaScript for image slider and graph
+        let currentIndex = 0;
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const mainImage = document.getElementById('mainImage');
+
+        function changeMainImage(src) {
+            mainImage.src = src;
+            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            Array.from(thumbnails).find(thumb => thumb.src === src).classList.add('active');
+        }
+
+        document.querySelector('.prev-button').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + thumbnails.length) % thumbnails.length;
+            changeMainImage(thumbnails[currentIndex].src);
+        });
+
+        document.querySelector('.next-button').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % thumbnails.length;
+            changeMainImage(thumbnails[currentIndex].src);
+        });
+
+        thumbnails[0].classList.add('active');
+
+        const ctx = document.getElementById('weightGraph').getContext('2d');
+        const weightChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan 2020', 'Jul 2020', 'Jan 2021', 'Jul 2021', 'Jan 2022', 'Jul 2022', 'Jan 2023', 'Jul 2023'],
+                datasets: [{
+                    label: 'Weight (kg)',
+                    data: [200, 300, 400, 500, 550, 600, 630, 650],
+                    backgroundColor: 'rgba(34, 139, 34, 0.2)',
+                    borderColor: 'rgba(34, 139, 34, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Weight (kg)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chat Widget JavaScript
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function sendMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const chatBody = document.getElementById('chatBody');
+            const message = chatInput.value.trim();
+
+            if (message) {
+                const messageElement = document.createElement('div');
+                messageElement.textContent = `You: ${message}`;
+                chatBody.appendChild(messageElement);
+                chatInput.value = '';
+                chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the latest message
+            }
+        }
+
+        // New JavaScript for Image Sharing and Downloading
+        function shareImage() {
+            const imageUrl = mainImage.src;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Livestock Image',
+                    url: imageUrl
+                }).then(() => {
+                    console.log('Thanks for sharing!');
+                }).catch(console.error);
+            } else {
+                alert('Sharing is not supported in your browser.');
+            }
+        }
+
+        function downloadImage() {
+            const imageUrl = mainImage.src;
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = 'livestock-image.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+
+
+
+        function openFullscreen() {
+    const mainImage = document.getElementById('mainImage');
+    const fullscreenContainer = document.getElementById('fullscreenContainer');
+    const fullscreenImage = document.getElementById('fullscreenImage');
+    
+    fullscreenImage.src = mainImage.src;
+    fullscreenContainer.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeFullscreen() {
+    const fullscreenContainer = document.getElementById('fullscreenContainer');
+    fullscreenContainer.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Add keyboard support for closing fullscreen view
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeFullscreen();
+    }
+});
+
+// Close fullscreen view when clicking outside the image
+document.getElementById('fullscreenContainer').addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeFullscreen();
+    }
+});
+    </script>
+
+
+<script>
+    // ... (keep your existing JavaScript) ...
+
+    // Enhanced Fullscreen Functions
+    function openFullscreen() {
+        const mainImage = document.getElementById('mainImage');
+        const fullscreenContainer = document.getElementById('fullscreenContainer');
+        const fullscreenImage = document.getElementById('fullscreenImage');
+        const thumbnailsContainer = document.getElementById('fullscreenThumbnails');
+        
+        // Set main image
+        fullscreenImage.src = mainImage.src;
+        
+        // Create thumbnails
+        thumbnailsContainer.innerHTML = '';
+        document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
+            const fullscreenThumb = document.createElement('img');
+            fullscreenThumb.src = thumb.src;
+            fullscreenThumb.className = 'fullscreen-thumbnail' + (index === currentIndex ? ' active' : '');
+            fullscreenThumb.onclick = () => {
+                currentIndex = index;
+                updateFullscreenImage();
+            };
+            thumbnailsContainer.appendChild(fullscreenThumb);
+        });
+        
+        fullscreenContainer.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function navigateFullscreen(direction) {
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        currentIndex = (currentIndex + direction + thumbnails.length) % thumbnails.length;
+        updateFullscreenImage();
+    }
+
+    function updateFullscreenImage() {
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const fullscreenImage = document.getElementById('fullscreenImage');
+        const fullscreenThumbnails = document.querySelectorAll('.fullscreen-thumbnail');
+        
+        fullscreenImage.src = thumbnails[currentIndex].src;
+        
+        fullscreenThumbnails.forEach((thumb, index) => {
+            thumb.classList.toggle('active', index === currentIndex);
+        });
+    }
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', function(event) {
+        const fullscreenContainer = document.getElementById('fullscreenContainer');
+        if (fullscreenContainer.style.display === 'flex') {
+            switch(event.key) {
+                case 'ArrowLeft':
+                    navigateFullscreen(-1);
+                    break;
+                case 'ArrowRight':
+                    navigateFullscreen(1);
+                    break;
+                case 'Escape':
+                    closeFullscreen();
+                    break;
+            }
+        }
+    });
+</script>
+</body>
+</html>

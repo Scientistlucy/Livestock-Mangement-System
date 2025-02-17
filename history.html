@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaccination History</title>
+    <style>
+        body, h1, table, p {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f1f8e9; /* Light green background */
+            color: #2e7d32; /* Dark green text */
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #1b5e20; /* Deep green title */
+        }
+
+        .history-section {
+            background: #c8e6c9; /* Soft green form background */
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .history-section p {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #43a047; /* Medium green header */
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #e8f5e9; /* Light green alternate rows */
+        }
+
+        tr:hover {
+            background-color: #c8e6c9; /* Soft green hover */
+        }
+
+        .back-btn {
+            background-color: #388e3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background-color: #2e7d32;
+        }
+
+        .download-dropdown {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .download-dropdown select {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #388e3c;
+        }
+
+        .download-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #388e3c;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .download-btn:hover {
+            background-color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vaccination History</h1>
+
+    <div class="history-section" id="vaccination-history">
+        <!-- Dynamic history content will be populated here -->
+    </div>
+
+    <button class="back-btn" onclick="window.history.back();">Back to Vaccination Schedule</button>
+
+    <div class="download-dropdown">
+        <label for="download-format">Download as:</label>
+        <select id="download-format">
+            <option value="">Select Format</option>
+            <option value="xls">Excel (.xls)</option>
+            <option value="pdf">PDF (.pdf)</option>
+        </select>
+        <button class="download-btn" onclick="downloadHistory()">Download</button>
+    </div>
+
+    <script>
+        // Get the cattleId from the URL query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const cattleId = urlParams.get('cattleId');
+
+        // Check if the cattleId is available
+        if (cattleId) {
+            // Populate vaccination history based on the cattleId
+            fetchVaccinationHistory(cattleId);
+        } else {
+            document.getElementById('vaccination-history').innerHTML = `<p>No vaccination history found for this Cattle ID.</p>`;
+        }
+
+        function fetchVaccinationHistory(cattleId) {
+            // Dummy data based on cattleId (you can replace this with actual data from your database or API)
+            let vaccinationData = getVaccinationData(cattleId);
+
+            // Display vaccination history
+            const historySection = document.getElementById('vaccination-history');
+
+            historySection.innerHTML = `
+                <p><strong>Cattle ID:</strong> ${vaccinationData.cattleId}</p>
+                <p><strong>Vaccine:</strong> ${vaccinationData.vaccine}</p>
+                <p><strong>Vaccination Date:</strong> ${vaccinationData.date}</p>
+                <p><strong>Reason for Vaccination:</strong> ${vaccinationData.reason}</p>
+                <p><strong>Previous Vaccination History:</strong></p>
+            `;
+
+            // Display previous vaccinations in a table
+            let previousVaccinations = vaccinationData.previousVaccinations;
+            let tableHTML = '<table><thead><tr><th>Cattle ID</th><th>Vaccine</th><th>Date</th></tr></thead><tbody>';
+            previousVaccinations.forEach(vaccination => {
+                tableHTML += `
+                    <tr>
+                        <td>${vaccination.cattleId}</td>
+                        <td>${vaccination.vaccine}</td>
+                        <td>${vaccination.date}</td>
+                    </tr>
+                `;
+            });
+            tableHTML += '</tbody></table>';
+            historySection.innerHTML += tableHTML;
+        }
+
+        function getVaccinationData(cattleId) {
+            // Dummy function to return vaccination data based on cattleId
+            // Replace this with actual logic to fetch data from your server or database
+            let vaccinationData = {
+                cattleId: cattleId,
+                vaccine: "Anthrax",
+                date: "2025-01-30",
+                reason: "Preventing spread of Anthrax in the herd.",
+                previousVaccinations: [
+                    { cattleId: "12345", vaccine: "Foot-and-mouth", date: "2024-12-15" },
+                    { cattleId: "12345", vaccine: "Rabies", date: "2024-10-05" }
+                ]
+            };
+            return vaccinationData;
+        }
+
+        function downloadHistory() {
+            const format = document.getElementById('download-format').value;
+            if (!format) {
+                alert("Please select a download format.");
+                return;
+            }
+
+            if (format === 'xls') {
+                downloadXLS();
+            } else if (format === 'pdf') {
+                downloadPDF();
+            }
+        }
+
+        function downloadXLS() {
+            // Convert vaccination history to an Excel file format (using simple data here)
+            const vaccinationData = getVaccinationData(cattleId);
+            let tableContent = `
+                <table border="1">
+                    <tr><th>Cattle ID</th><th>Vaccine</th><th>Date</th><th>Reason</th></tr>
+                    <tr><td>${vaccinationData.cattleId}</td><td>${vaccinationData.vaccine}</td><td>${vaccinationData.date}</td><td>${vaccinationData.reason}</td></tr>
+                </table>
+            `;
+            const xlsData = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">' + tableContent + '</html>';
+            const blob = new Blob([xlsData], { type: 'application/vnd.ms-excel' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${vaccinationData.cattleId}_vaccination_history.xls`;
+            a.click();
+        }
+
+        function downloadPDF() {
+            // Create PDF with vaccination details (using jsPDF library)
+            const vaccinationData = getVaccinationData(cattleId);
+            const doc = new jsPDF();
+            doc.text(`Cattle ID: ${vaccinationData.cattleId}`, 10, 10);
+            doc.text(`Vaccine: ${vaccinationData.vaccine}`, 10, 20);
+            doc.text(`Vaccination Date: ${vaccinationData.date}`, 10, 30);
+            doc.text(`Reason for Vaccination: ${vaccinationData.reason}`, 10, 40);
+            doc.text("Previous Vaccination History:", 10, 50);
+
+            vaccinationData.previousVaccinations.forEach((vaccination, index) => {
+                doc.text(`- ${vaccination.vaccine} on ${vaccination.date}`, 10, 60 + index * 10);
+            });
+
+            doc.save(`${vaccinationData.cattleId}_vaccination_history.pdf`);
+        }
+    </script>
+    
+    <!-- Include jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</body>
+</html>
