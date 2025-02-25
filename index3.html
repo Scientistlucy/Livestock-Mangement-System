@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livestock Weight Progress Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .chart-legend {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 10px;
+            border-radius: 2px;
+        }
+
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .metric-label {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chart-container">
+        <div class="chart-header">
+            <h2 class="chart-title">Livestock Weight Progress</h2>
+        </div>
+
+        <div class="metrics-container">
+            <div class="metric-card">
+                <div class="metric-value" id="targetWeight">0 kg</div>
+                <div class="metric-label">Target Weight</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="currentWeight">0 kg</div>
+                <div class="metric-label">Current Weight</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="weightToGain">0 kg</div>
+                <div class="metric-label">Weight to Gain</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="weightGained">0 kg</div>
+                <div class="metric-label">Weight Gained</div>
+            </div>
+        </div>
+
+        <canvas id="weightProgressChart"></canvas>
+
+        <div class="chart-legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #4CAF50;"></div>
+                <span>Actual Weight</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ff0000;"></div>
+                <span>Target Weight</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #2196F3;"></div>
+                <span>Projected Growth</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FFC107;"></div>
+                <span>Weight Gained</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data - replace with your actual data
+        const animalData = {
+            initialWeight: 200,
+            targetWeight: 500,
+            weightRecords: [
+                { date: '2024-01-01', weight: 200 },
+                { date: '2024-01-15', weight: 225 },
+                { date: '2024-02-01', weight: 250 },
+                { date: '2024-02-15', weight: 280 },
+                { date: '2024-03-01', weight: 310 },
+                { date: '2024-03-15', weight: 340 }
+            ]
+        };
+
+        function initializeChart() {
+            const ctx = document.getElementById('weightProgressChart').getContext('2d');
+            
+            // Calculate metrics
+            const currentWeight = animalData.weightRecords[animalData.weightRecords.length - 1].weight;
+            const weightGained = currentWeight - animalData.initialWeight;
+            const weightToGain = animalData.targetWeight - currentWeight;
+            
+            // Update metric cards
+            document.getElementById('targetWeight').textContent = `${animalData.targetWeight} kg`;
+            document.getElementById('currentWeight').textContent = `${currentWeight} kg`;
+            document.getElementById('weightToGain').textContent = `${weightToGain} kg`;
+            document.getElementById('weightGained').textContent = `${weightGained} kg`;
+
+            // Prepare chart data
+            const labels = animalData.weightRecords.map(record => record.date);
+            const actualWeights = animalData.weightRecords.map(record => record.weight);
+            
+            // Calculate projected growth
+            const lastDate = new Date(labels[labels.length - 1]);
+            const projectedDates = [];
+            const projectedWeights = [];
+            
+            // Calculate average daily gain
+            const daysTotal = (new Date(labels[labels.length - 1]) - new Date(labels[0])) / (1000 * 60 * 60 * 24);
+            const avgDailyGain = weightGained / daysTotal;
+            
+            // Project future weights
+            let currentDate = lastDate;
+            let projectedWeight = currentWeight;
+            while (projectedWeight < animalData.targetWeight) {
+                currentDate = new Date(currentDate.setDate(currentDate.getDate() + 15));
+                projectedWeight += avgDailyGain * 15;
+                projectedDates.push(currentDate.toISOString().split('T')[0]);
+                projectedWeights.push(projectedWeight);
+            }
+
+            // Create the chart
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [...labels, ...projectedDates],
+                    datasets: [
+                        {
+                            label: 'Actual Weight',
+                            data: [...actualWeights, null, ...new Array(projectedDates.length).fill(null)],
+                            borderColor: '#4CAF50',
+                            tension: 0.4,
+                            fill: false
+                        },
+                        {
+                            label: 'Target Weight',
+                            data: new Array(labels.length + projectedDates.length + 1).fill(animalData.targetWeight),
+                            borderColor: '#ff0000',
+                            borderDash: [5, 5],
+                            tension: 0,
+                            fill: false
+                        },
+                        {
+                            label: 'Projected Growth',
+                            data: [...new Array(labels.length).fill(null), currentWeight, ...projectedWeights],
+                            borderColor: '#2196F3',
+                            borderDash: [5, 5],
+                            tension: 0.4,
+                            fill: false
+                        },
+                        {
+                            label: 'Weight Gained',
+                            data: actualWeights,
+                            backgroundColor: 'rgba(255, 193, 7, 0.2)',
+                            borderColor: '#FFC107',
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Weight (kg)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Weight Progress and Projections',
+                            font: {
+                                size: 16
+                            }
+                        },
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize the chart when the page loads
+        document.addEventListener('DOMContentLoaded', initializeChart);
+    </script>
+</body>
+</html>

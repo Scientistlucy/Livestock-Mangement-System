@@ -797,15 +797,9 @@
     </div>
 
     <div class="form-container">
-        <h2 class="page-title">Add New Livestock</h2>
+        <h2 class="page-title">Edit Livestock</h2>
         
-        <!-- Tab Navigation -->
-        <div class="tabs-container">
-            <button class="tab-button active" onclick="showTab('single')">Add Single Animal</button>
-            <button class="tab-button" onclick="showTab('bulk')">CSV Import</button>
-            <button class="tab-button" onclick="showTab('batch')">Batch Entry</button>
-            <button class="tab-button" onclick="showTab('excel')">Excel Template</button>
-        </div>
+       
 
         <!-- Single Animal Form -->
         <div id="single-tab" class="tab-content active">
@@ -837,11 +831,16 @@
                             <div class="error-message" id="breed-error">Please select a breed</div>
                         </div>
                         <div class="form-group">
-                            <label for="dob" class="required-field">Date of Birth</label>
-                            <input type="date" id="dob" name="dob" required>
-                            <div class="helper-text">Enter animal's date of birth or estimate</div>
-                            <div class="error-message" id="dob-error">Please enter date of birth</div>
-                        </div>
+                            <label for="ageRange">Age Range</label>
+                            <select id="ageRange">
+                                <option value="">All</option>
+                                <option value="0-2">0-2 years</option>
+                                <option value="3-7">3-7 years</option>
+                                <option value="8-12">8-12 years</option>
+                                <option value="13-18">13-18 years</option>
+                                <option value="19+">19+ years</option>
+                            </select>
+                                    </div>
                         <div class="form-group">
                             <label for="sex" class="required-field">Sex</label>
                             <select id="sex" name="sex" required>
@@ -927,357 +926,7 @@
             </form>
         </div>
 
-        <!-- CSV Bulk Import Tab -->
-        <div id="bulk-tab" class="tab-content">
-            <div class="import-progress">
-                <div class="progress-step active" id="step-upload">
-                    <div class="step-circle">1</div>
-                    <div class="step-label">Upload CSV</div>
-                </div>
-                <div class="progress-step" id="step-preview">
-                    <div class="step-circle">2</div>
-                    <div class="step-label">Preview Data</div>
-                </div>
-                <div class="progress-step" id="step-import">
-                    <div class="step-circle">3</div>
-                    <div class="step-label">Import</div>
-                </div>
-            </div>
-
-            <div id="step-upload-content">
-                <div class="csv-import-container">
-                    <div class="csv-step">
-                        <h3 class="step-title">
-                            <span class="step-number">1</span> Download Template
-                        </h3>
-                        <p>Start by downloading our CSV template. This template includes all the required fields and examples to guide you.</p>
-                        <div style="margin-top: 20px;">
-                            <button class="csv-template-btn">
-                                <i class="fas fa-download"></i> Download Template
-                                <button class="csv-template-btn">
-                                    <i class="fas fa-download"></i> Download Template
-                                </button>
-                                <button class="csv-template-btn" style="background-color: #6c757d;">
-                                    <i class="fas fa-info-circle"></i> View Instructions
-                                </button>
-                            </div>
-                        </div>
-    
-                        <div class="csv-step">
-                            <h3 class="step-title">
-                                <span class="step-number">2</span> Prepare Your Data
-                            </h3>
-                            <p>Fill in your livestock data using the template. Make sure to follow these guidelines:</p>
-                            <ul style="margin-left: 20px; line-height: 1.6; margin-top: 15px;">
-                                <li>Enter one animal per row</li>
-                                <li>Required fields: RFID Tag, Breed, Date of Birth, Sex, Type, Weight, and Price</li>
-                                <li>Use the date format YYYY-MM-DD (e.g., 2023-06-15)</li>
-                                <li>For Sex, use "male" or "female"</li>
-                                <li>For Type, use one of: "cow", "bull", "heifer", or "calf"</li>
-                            </ul>
-                        </div>
-    
-                        <div class="csv-step">
-                            <h3 class="step-title">
-                                <span class="step-number">3</span> Upload Your File
-                            </h3>
-                            <p>Upload your completed CSV file here. We'll validate the data before importing.</p>
-                            
-                            <div class="csv-import-zone" id="csv-drop-zone">
-                                <div class="csv-import-icon">
-                                    <i class="fas fa-file-csv"></i>
-                                </div>
-                                <p>Drag and drop your CSV file here<br>or</p>
-                                <input type="file" id="csv-file-input" accept=".csv" style="display: none;">
-                                <button type="button" class="add-record-btn" onclick="document.getElementById('csv-file-input').click()">
-                                    <i class="fas fa-file-upload"></i> Select File
-                                </button>
-                                <p class="helper-text" style="margin-top: 15px;">Maximum file size: 10MB</p>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <button type="button" class="submit-btn" id="csv-next-btn" disabled>
-                        <i class="fas fa-arrow-right"></i> Next: Preview Data
-                    </button>
-                </div>
-    
-                <div id="step-preview-content" style="display: none;">
-                    <div class="csv-import-container">
-                        <h3 class="section-title">
-                            <i class="fas fa-table"></i> Preview Data
-                        </h3>
-                        <p>Review your data before importing. Click "Import Data" when you're ready to proceed.</p>
-                        
-                        <div class="csv-preview-table-container" style="overflow-x: auto; margin-top: 20px;">
-                            <table class="csv-preview-table" id="preview-table">
-                                <thead>
-                                    <tr>
-                                        <th>RFID Tag</th>
-                                        <th>Breed</th>
-                                        <th>DOB</th>
-                                        <th>Sex</th>
-                                        <th>Type</th>
-                                        <th>Weight (kg)</th>
-                                        <th>Price (Ksh)</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Preview data will be populated here -->
-                                    <tr>
-                                        <td>KE123456789</td>
-                                        <td>Holstein</td>
-                                        <td>2022-03-15</td>
-                                        <td>female</td>
-                                        <td>heifer</td>
-                                        <td>320.5</td>
-                                        <td>45000</td>
-                                        <td><span style="color: #28a745;"><i class="fas fa-check-circle"></i> Valid</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>KE987654321</td>
-                                        <td>Angus</td>
-                                        <td>2023-01-10</td>
-                                        <td>male</td>
-                                        <td>calf</td>
-                                        <td>150.0</td>
-                                        <td>25000</td>
-                                        <td><span style="color: #28a745;"><i class="fas fa-check-circle"></i> Valid</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>KE555666777</td>
-                                        <td>Jersey</td>
-                                        <td>2021-11-22</td>
-                                        <td>female</td>
-                                        <td>cow</td>
-                                        <td></td>
-                                        <td>60000</td>
-                                        <td><span style="color: #dc3545;"><i class="fas fa-exclamation-circle"></i> Missing weight</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-    
-                        <div class="preview-controls">
-                            <div class="validation-summary">
-                                <p><strong>Validation Summary:</strong></p>
-                                <p><span style="color: #28a745;"><i class="fas fa-check-circle"></i> 2 valid records</span></p>
-                                <p><span style="color: #dc3545;"><i class="fas fa-exclamation-circle"></i> 1 record with errors</span></p>
-                            </div>
-                            <div class="preview-pagination">
-                                <button class="pagination-btn" disabled>
-                                    <i class="fas fa-chevron-left"></i> Previous
-                                </button>
-                                <span>Page 1 of 1</span>
-                                <button class="pagination-btn" disabled>
-                                    Next <i class="fas fa-chevron-right"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div style="display: flex; gap: 15px; margin-top: 20px;">
-                        <button type="button" class="submit-btn" style="background-color: #6c757d;" id="csv-back-btn">
-                            <i class="fas fa-arrow-left"></i> Back
-                        </button>
-                        <button type="button" class="submit-btn" id="csv-import-btn">
-                            <i class="fas fa-file-import"></i> Import Data
-                        </button>
-                    </div>
-                </div>
-    
-                <div id="step-import-content" style="display: none;">
-                    <div class="csv-import-container">
-                        <h3 class="section-title">
-                            <i class="fas fa-cogs"></i> Import Progress
-                        </h3>
-                        <p>Your data is being processed. Please do not close this page.</p>
-    
-                        <div class="progress-container">
-                            <div class="progress-bar" id="import-progress-bar" style="width: 75%;"></div>
-                        </div>
-    
-                        <div class="import-status">
-                            <h4 class="status-title">
-                                <i class="fas fa-info-circle" style="color: #17a2b8; margin-right: 10px;"></i> Status Updates
-                            </h4>
-                            <ul class="status-list">
-                                <li class="status-item">
-                                    <span class="status-icon status-success"><i class="fas fa-check-circle"></i></span>
-                                    <span>Validating CSV format... <strong>Complete</strong></span>
-                                </li>
-                                <li class="status-item">
-                                    <span class="status-icon status-success"><i class="fas fa-check-circle"></i></span>
-                                    <span>Processing record KE123456789... <strong>Success</strong></span>
-                                </li>
-                                <li class="status-item">
-                                    <span class="status-icon status-success"><i class="fas fa-check-circle"></i></span>
-                                    <span>Processing record KE987654321... <strong>Success</strong></span>
-                                </li>
-                                <li class="status-item">
-                                    <span class="status-icon status-error"><i class="fas fa-times-circle"></i></span>
-                                    <span>Processing record KE555666777... <strong>Failed</strong> (Missing weight)</span>
-                                </li>
-                                <li class="status-item">
-                                    <span class="status-icon status-info"><i class="fas fa-spinner fa-spin"></i></span>
-                                    <span>Finalizing import...</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-    
-                    <button type="button" class="submit-btn" id="import-finish-btn" style="display: none;">
-                        <i class="fas fa-check"></i> Complete Import
-                    </button>
-                </div>
-            </div>
-    
-            <!-- Batch Entry Tab -->
-            <div id="batch-tab" class="tab-content">
-                <div class="batch-form-container">
-                    <h3 class="section-title">
-                        <i class="fas fa-th-list"></i> Batch Entry Form
-                    </h3>
-                    <p>Enter multiple livestock records at once. All fields are required except where noted.</p>
-    
-                    <div class="batch-header">
-                        <div>RFID Tag</div>
-                        <div>Breed</div>
-                        <div>Date of Birth</div>
-                        <div>Sex</div>
-                        <div>Type</div>
-                        <div>Weight (kg)</div>
-                        <div>Price (Ksh)</div>
-                    </div>
-    
-                    <div id="batch-rows-container">
-                        <div class="batch-row" data-row="1">
-                            <input type="text" placeholder="RFID Tag" required>
-                            <select required>
-                                <option value="">Select Breed</option>
-                                <option value="holstein">Holstein</option>
-                                <option value="jersey">Jersey</option>
-                                <option value="angus">Angus</option>
-                                <option value="brahman">Brahman</option>
-                                <option value="charolais">Charolais</option>
-                                <option value="guernsey">Guernsey</option>
-                                <option value="hereford">Hereford</option>
-                                <option value="simmental">Simmental</option>
-                            </select>
-                            <input type="date" required>
-                            <select required>
-                                <option value="">Select Sex</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-                            <select required>
-                                <option value="">Select Type</option>
-                                <option value="cow">Cow</option>
-                                <option value="bull">Bull</option>
-                                <option value="heifer">Heifer</option>
-                                <option value="calf">Calf</option>
-                            </select>
-                            <input type="number" min="0" step="0.1" placeholder="Weight" required>
-                            <input type="number" min="0" placeholder="Price" required>
-                            <button type="button" class="remove-batch-row" onclick="removeBatchRow(this)" style="display: none;">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-    
-                    <div class="batch-actions">
-                        <button type="button" class="add-record-btn" onclick="addBatchRow()">
-                            <i class="fas fa-plus"></i> Add Row
-                        </button>
-                        <button type="button" class="add-record-btn" style="background-color: #17a2b8;">
-                            <i class="fas fa-file-import"></i> Import from CSV
-                        </button>
-                    </div>
-    
-                    <button type="button" class="submit-btn" style="margin-top: 30px;">
-                        <i class="fas fa-save"></i> Save All Records
-                    </button>
-                </div>
-            </div>
-    
-            <!-- Excel Template Tab -->
-            <div id="excel-tab" class="tab-content">
-                <div class="excel-import-container">
-                    <h3 class="section-title">
-                        <i class="fas fa-file-excel"></i> Excel Template Import
-                    </h3>
-                    <p>Use our structured Excel template to add multiple livestock records easily.</p>
-    
-                    <div class="csv-step">
-                        <h3 class="step-title">
-                            <span class="step-number">1</span> Download Excel Template
-                        </h3>
-                        <p>Our Excel template includes predefined validation rules and dropdown menus to ensure accurate data entry.</p>
-                        <div style="margin-top: 20px;">
-                            <button class="csv-template-btn" style="background-color: #217346;">
-                                <i class="fas fa-file-excel"></i> Download Excel Template
-                            </button>
-                        </div>
-    
-                        <div class="template-preview">
-                            <div class="template-preview-header">
-                                <div class="template-preview-cell">RFID Tag</div>
-                                <div class="template-preview-cell">Breed</div>
-                                <div class="template-preview-cell">DOB</div>
-                                <div class="template-preview-cell">Sex</div>
-                                <div class="template-preview-cell">Type</div>
-                                <div class="template-preview-cell">Weight (kg)</div>
-                                <div class="template-preview-cell">Price (Ksh)</div>
-                                <div class="template-preview-cell">Notes</div>
-                            </div>
-                            <div class="template-preview-row">
-                                <div class="template-preview-cell">KE123456789</div>
-                                <div class="template-preview-cell">Holstein</div>
-                                <div class="template-preview-cell">2022-03-15</div>
-                                <div class="template-preview-cell">Female</div>
-                                <div class="template-preview-cell">Heifer</div>
-                                <div class="template-preview-cell">320.5</div>
-                                <div class="template-preview-cell">45000</div>
-                                <div class="template-preview-cell">Purchased from Farm A</div>
-                            </div>
-                            <div class="template-preview-row">
-                                <div class="template-preview-cell">KE987654321</div>
-                                <div class="template-preview-cell">Angus</div>
-                                <div class="template-preview-cell">2023-01-10</div>
-                                <div class="template-preview-cell">Male</div>
-                                <div class="template-preview-cell">Calf</div>
-                                <div class="template-preview-cell">150.0</div>
-                                <div class="template-preview-cell">25000</div>
-                                <div class="template-preview-cell">Born on farm</div>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <div class="csv-step">
-                        <h3 class="step-title">
-                            <span class="step-number">2</span> Fill and Upload Template
-                        </h3>
-                        <p>After filling out the template, save it and upload the completed file here:</p>
-                        
-                        <div class="csv-import-zone" id="excel-drop-zone">
-                            <div class="csv-import-icon">
-                                <i class="fas fa-file-excel" style="color: #217346;"></i>
-                            </div>
-                            <p>Drag and drop your Excel file here<br>or</p>
-                            <input type="file" id="excel-file-input" accept=".xlsx, .xls" style="display: none;">
-                            <button type="button" class="add-record-btn" onclick="document.getElementById('excel-file-input').click()" style="background-color: #217346;">
-                                <i class="fas fa-file-upload"></i> Select Excel File
-                            </button>
-                            <p class="helper-text" style="margin-top: 15px;">Supported formats: .xlsx, .xls</p>
-                        </div>
-                    </div>
-                </div>
-    
-                <button type="button" class="submit-btn" id="excel-upload-btn" disabled>
-                    <i class="fas fa-upload"></i> Upload and Process
-                </button>
-            </div>
+       
         </div>
     
         <script>
@@ -1306,7 +955,7 @@
                 const recordHtml = `
                     <div class="record-entry" id="vac-${recordId}">
                         <div class="form-group">
-                            <label for="vac-type-${recordId}">Vaccine Type</label>
+                            <label for="vac-type-${recordId}">Vaccine Name</label>
                             <input type="text" id="vac-type-${recordId}" name="vac-type[]" placeholder="Enter vaccine type">
                         </div>
                         <div class="form-group">
@@ -1334,17 +983,23 @@
                 const recordHtml = `
                     <div class="record-entry" id="treat-${recordId}">
                         <div class="form-group">
-                            <label for="treat-condition-${recordId}">Condition</label>
+                            <label for="treat-condition-${recordId}">Illness</label>
                             <input type="text" id="treat-condition-${recordId}" name="treat-condition[]" placeholder="Enter condition">
                         </div>
                         <div class="form-group">
-                            <label for="treat-medicine-${recordId}">Medicine</label>
+                            <label for="treat-medicine-${recordId}">Treatment Administered:</label>
+                            <input type="text" id="treat-medicine-${recordId}" name="treat-medicine[]" placeholder="Enter medicine used">
+                        </div>
+                        <div class="form-group">
+                            <label for="treat-medicine-${recordId}">Medication Name</label>
                             <input type="text" id="treat-medicine-${recordId}" name="treat-medicine[]" placeholder="Enter medicine used">
                         </div>
                         <div class="form-group">
                             <label for="treat-date-${recordId}">Treatment Date</label>
                             <input type="date" id="treat-date-${recordId}" name="treat-date[]">
                         </div>
+                         
+                        
                         <button type="button" class="remove-record-btn" onclick="removeRecord('treat-${recordId}')">
                             <i class="fas fa-times"></i>
                         </button>

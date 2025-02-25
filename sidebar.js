@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <!-- Navigation Menu -->
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="dashboard.html" data-title="Dashboard">
+                <a href="/dashboard.html" data-title="Dashboard">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard Overview</span>
                 </a>
@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span>Livestock Inventory</span>
                 </a>
                 <ul class="submenu">
-                    <li><a href="animals.html">Animals</a></li>
-                    <li><a href="breeds.html">Breeds</a></li>
-                    <li><a href="groups.html">Groups/Pens</a></li>
+                    <li><a href="/animals.html">Animals</a></li>
+                    <li><a href="/breeds.html">Breeds</a></li>
+                    <li><a href="/groups.html">Groups/Pens</a></li>
                 </ul>
             </li>
 
@@ -43,9 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span>Vaccine Management</span>
                 </a>
                 <ul class="submenu">
-                    <li><a href="health-records.html">Health Records</a></li>
-                    <li><a href="schedule_vaccination.html">Vaccinations Schedule</a></li>
-                    <li><a href="vet-contacts.html">Veterinary Contacts</a></li>
+                    <li><a href="/health-records.html">Health Records</a></li>
+                    <li><a href="/schedule_vaccination.html">Vaccinations Schedule</a></li>
+                    <li><a href="/vet-contacts.html">Veterinary Contacts</a></li>
                 </ul>
             </li>
 
@@ -55,9 +55,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span>Breeding & Reproduction</span>
                 </a>
                 <ul class="submenu">
-                    <li><a href="breeding-schedule.html">Breeding Schedule</a></li>
-                    <li><a href="pregnancy_records.html">Pregnancy Tracking</a></li>
-                    <li><a href="birth-records.html">Birth Records</a></li>
+                    <li><a href="/breeding-schedule.html">Breeding Schedule</a></li>
+                    <li><a href="/pregnancy_records.html">Pregnancy Tracking</a></li>
+                    <li><a href="/birth-records.html">Birth Records</a></li>
                 </ul>
             </li>
 
@@ -67,9 +67,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span>Health Management</span>
                 </a>
                 <ul class="submenu">
-                    <li><a href="feed-inventory.html">Feed Inventory</a></li>
-                    <li><a href="feeding-schedule.html">Feeding Schedule</a></li>
-                    <li><a href="nutrition-plans.html">Nutrition Plans</a></li>
+                    <li><a href="/feed-inventory.html">Feed Inventory</a></li>
+                    <li><a href="/feeding-schedule.html">Feeding Schedule</a></li>
+                    <li><a href="/nutrition-plans.html">Nutrition Plans</a></li>
                 </ul>
             </li>
 
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span>Production & Performance</span>
                 </a>
                 <ul class="submenu">
-                    <li><a href="weight-tracking.html">Weight Tracking</a></li>
+                    <li><a href="/weight-tracking.html">Weight Tracking</a></li>
                 </ul>
             </li>
 
@@ -89,10 +89,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span>Sales Management</span>
                 </a>
                 <ul class="submenu">
-                    <li><a href="buyers.html">Buyers</a></li> 
-                    <li><a href="sellers.html">Sellers</a></li> 
-                    <li><a href="sales.html">Livestock Sale List</a></li>
-                    <li><a href="profit-analysis.html">Profit Analysis</a></li>
+                    <li><a href="/buyers.html">Buyers</a></li> 
+                    <li><a href="/sellers.html">Sellers</a></li> 
+                    <li><a href="/sales.html">Livestock Sale List</a></li>
+                    <li><a href="/profit-analysis.html">Profit Analysis</a></li>
                 </ul>
             </li>
 
@@ -102,9 +102,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span>Reports & Analytics</span>
                 </a>
                 <ul class="submenu">
-                    <li><a href="health-reports.html">Health Reports</a></li>
-                    <li><a href="production-reports.html">Production Reports</a></li>
-                    <li><a href="financial-reports.html">Financial Reports</a></li>
+                    <li><a href="/health-reports.html">Health Reports</a></li>
+                    <li><a href="/production-reports.html">Production Reports</a></li>
+                    <li><a href="/financial-reports.html">Financial Reports</a></li>
                 </ul>
             </li>
 
@@ -114,9 +114,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span>Settings & Configuration</span>
                 </a>
                 <ul class="submenu">
-                    <li><a href="user-management.html">User Management</a></li>
-                    <li><a href="farm-details.html">Farm Details</a></li>
-                    <li><a href="system-preferences.html">System Preferences</a></li>
+                    <li><a href="/user-management.html">User Management</a></li>
+                    <li><a href="/farm-details.html">Farm Details</a></li>
+                    <li><a href="/system-preferences.html">System Preferences</a></li>
                 </ul>
             </li>
 
@@ -126,8 +126,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     <span>Help & Support</span>
                 </a>
                 <ul class="submenu">
-                    <li><a href="user-guides.html">User Guides</a></li>
-                    <li><a href="contact-support.html">Contact Support</a></li>
+                    <li><a href="/user-guides.html">User Guides</a></li>
+                    <li><a href="/contact-support.html">Contact Support</a></li>
                 </ul>
             </li>
         </ul>

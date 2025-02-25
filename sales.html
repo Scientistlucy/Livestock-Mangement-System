@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livestock Sales Information</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --light: #ecf0f1;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .form-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+        
+        .section-title {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        .form-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-control {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .img-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .img-preview {
+            width: 200px;
+            height: 200px;
+            background-color: #f1f1f1;
+            border: 2px dashed #ccc;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .img-upload input {
+            width: 200px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219653;
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+        }
+        
+        .table-view {
+            margin-top: 40px;
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: white;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--secondary);
+            color: white;
+            font-weight: 500;
+        }
+        
+        tr:hover {
+            background-color: #f5f7fa;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .status-healthy {
+            background-color: rgba(39, 174, 96, 0.2);
+            color: var(--success);
+        }
+        
+        .status-pending {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: var(--warning);
+        }
+        
+        .status-sick {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--danger);
+        }
+        
+        .selected-row {
+            background-color: rgba(52, 152, 219, 0.1);
+            box-shadow: inset 0 0 0 2px var(--accent);
+        }
+        
+        .selection-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .selection-summary {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .selection-summary.active {
+            display: block;
+        }
+        
+        .summary-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .selected-animals {
+            margin-bottom: 15px;
+        }
+        
+        .animal-chip {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--light);
+            border: 1px solid #ddd;
+            border-radius: 100px;
+            padding: 5px 10px;
+            margin: 5px;
+            font-size: 14px;
+        }
+        
+        .remove-selection {
+            background-color: transparent;
+            border: none;
+            color: var(--danger);
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .animal-chip:hover {
+            background-color: #e3e3e3;
+        }
+        
+        /* Multi-step form styles */
+        .multi-step-form {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            display: none;
+        }
+        
+        .multi-step-form.active {
+            display: block;
+        }
+        
+        /* Progress bar styles */
+        .progress-container {
+            margin: 0 auto 30px;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+            max-width: 100%;
+            width: 100%;
+        }
+        
+        .progress-bar::before {
+            content: "";
+            background-color: #ddd;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 100%;
+            z-index: 1;
+        }
+        
+        .progress-bar .progress {
+            background-color: var(--accent);
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 0%;
+            z-index: 2;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-step .step-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #777;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+        
+        .progress-step.active .step-circle {
+            background-color: var(--accent);
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+        
+        .progress-step.active .step-label {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .progress-step.completed .step-circle {
+            background-color: var(--success);
+        }
+        
+        .progress-step.completed .step-circle::after {
+            content: "✓";
+            font-size: 16px;
+        }
+        
+        /* Form steps */
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--secondary);
+        }
+        
+        .transfer-summary {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            .form-group {
+                grid-template-columns: 1fr;
+            }
+            .action-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn {
+                width: 100%;
+            }
+            .progress-bar {
+                padding: 0 10px;
+            }
+            .step-label {
+                font-size: 12px;
+            }
+        }
+
+        /* receipt styling  */
+        .receipt-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .receipt-content {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .receipt-header {
+    text-align: center;
+    border-bottom: 2px solid #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+  }
+
+  .receipt-info {
+    margin: 15px 0;
+  }
+
+  .receipt-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+
+  .receipt-table th,
+  .receipt-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .receipt-table th {
+    background-color: #f5f5f5;
+  }
+
+  .receipt-total {
+    text-align: right;
+    font-weight: bold;
+    margin: 20px 0;
+    font-size: 1.2em;
+  }
+
+  .receipt-footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #666;
+  }
+
+  .print-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px;
+  }
+
+  .print-button:hover {
+    background-color: #2980b9;
+  }
+
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+    
+    .receipt-content {
+      width: 100%;
+      max-width: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      padding: 2cm;
+    }
+  }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Livestock Sales Information System</h1>
+        </header>
+        
+        <main>
+            <!-- Table View of Livestock Records with Selection -->
+            <div class="table-view">
+                <h2 class="section-title">Current Livestock Inventory</h2>
+                
+                <div class="selection-controls">
+                    <div>
+                        <button id="select-all-btn" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">Select All</button>
+                        <button id="deselect-all-btn" class="btn btn-danger" style="padding: 8px 16px; font-size: 14px;">Deselect All</button>
+                    </div>
+                    <div>
+                        <button id="transfer-selected-btn" class="btn btn-success" style="padding: 8px 16px; font-size: 14px;">Transfer Selected Animals</button>
+                    </div>
+                </div>
+                
+                <div id="selection-summary" class="selection-summary">
+                    <div class="summary-title">
+                        <h3>Selected Animals: <span id="selected-count">0</span></h3>
+                        <div>Total Value: $<span id="selected-value">0.00</span></div>
+                    </div>
+                    <div id="selected-animals" class="selected-animals"></div>
+                </div>
+                
+                <table id="livestock-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all-checkbox"></th>
+                            <th>ID/Tag</th>
+                            <th>RFID</th>
+                            <th>Breed</th>
+                            <th>Gender</th>
+                            <th>Type</th>
+                            <th>Weight (kg)</th>
+                            <th>Age</th>
+                            <th>Health Status</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-id="A12345" data-price="3190.00">
+                            <td><input type="checkbox" class="animal-select"></td>
+                            <td>A12345</td>
+                            <td>100023456789</td>
+                            <td>Angus</td>
+                            <td>Female</td>
+                            <td>Cow</td>
+                            <td>580</td>
+                            <td>4 years</td>
+                            <td><span class="status-badge status-healthy">Healthy</span></td>
+                            <td>$3,190.00</td>
+                            <td><button class="btn btn-primary" style="padding: 5px 10px; font-size: 14px;">Edit</button></td>
+                        </tr>
+                        <tr data-id="B67890" data-price="5225.00">
+                            <td><input type="checkbox" class="animal-select"></td>
+                            <td>B67890</td>
+                            <td>100087654321</td>
+                            <td>Hereford</td>
+                            <td>Male</td>
+                            <td>Bull</td>
+                            <td>950</td>
+                            <td>5 years</td>
+                            <td><span class="status-badge status-pending">Pending Tests</span></td>
+                            <td>$5,225.00</td>
+                            <td><button class="btn btn-primary" style="padding: 5px 10px; font-size: 14px;">Edit</button></td>
+                        </tr>
+                        <tr data-id="C13579" data-price="2475.00">
+                            <td><input type="checkbox" class="animal-select"></td>
+                            <td>C13579</td>
+                            <td>100019283746</td>
+                            <td>Charolais</td>
+                            <td>Female</td>
+                            <td>Heifer</td>
+                            <td>450</td>
+                            <td>1.5 years</td>
+                            <td><span class="status-badge status-sick">Under Treatment</span></td>
+                            <td>$2,475.00</td>
+                            <td><button class="btn btn-primary" style="padding: 5px 10px; font-size: 14px;">Edit</button></td>
+                        </tr>
+                        <tr data-id="D24680" data-price="3800.00">
+                            <td><input type="checkbox" class="animal-select"></td>
+                            <td>D24680</td>
+                            <td>100036925814</td>
+                            <td>Angus</td>
+                            <td>Male</td>
+                            <td>Steer</td>
+                            <td>720</td>
+                            <td>2 years</td>
+                            <td><span class="status-badge status-healthy">Healthy</span></td>
+                            <td>$3,800.00</td>
+                            <td><button class="btn btn-primary" style="padding: 5px 10px; font-size: 14px;">Edit</button></td>
+                        </tr>
+                        <tr data-id="E31357" data-price="1950.00">
+                            <td><input type="checkbox" class="animal-select"></td>
+                            <td>E31357</td>
+                            <td>100047158293</td>
+                            <td>Holstein</td>
+                            <td>Female</td>
+                            <td>Cow</td>
+                            <td>510</td>
+                            <td>3 years</td>
+                            <td><span class="status-badge status-healthy">Healthy</span></td>
+                            <td>$1,950.00</td>
+                            <td><button class="btn btn-primary" style="padding: 5px 10px; font-size: 14px;">Edit</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Multi-Step Form with Progress Bar -->
+            <div id="multi-step-form" class="multi-step-form">
+                <h2 class="section-title">Transfer Selected Animals</h2>
+                
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-bar"></div>
+                        
+                        <div class="progress-step active" data-title="Animal Selection">
+                            <div class="step-circle">1</div>
+                            <div class="step-label">Animal Selection</div>
+                        </div>
+                        
+                        <div class="progress-step" data-title="Buyer Information">
+                            <div class="step-circle">2</div>
+                            <div class="step-label">Buyer Information</div>
+                        </div>
+                        
+                        <div class="progress-step" data-title="Transfer Details">
+                            <div class="step-circle">3</div>
+                            <div class="step-label">Transfer Details</div>
+                        </div>
+                        
+                        <div class="progress-step" data-title="Review & Confirm">
+                            <div class="step-circle">4</div>
+                            <div class="step-label">Review & Confirm</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 1: Animal Selection -->
+                <div class="form-step active" id="step-1">
+                    <h3 class="mb-4">Selected Animals for Transfer</h3>
+                    <div id="step1-selected-animals" class="selected-animals"></div>
+                    <div class="summary-title">
+                        <div>Total Selected: <span id="step1-selected-count">0</span> animals</div>
+                        <div>Total Value: $<span id="step1-selected-value">0.00</span></div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="cancel-transfer" class="btn btn-danger">Cancel</button>
+                        <button id="step1-next" class="btn btn-primary">Next: Buyer Information</button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Buyer Information -->
+                <div class="form-step" id="step-2">
+                    <h3 class="mb-4">Buyer Information</h3>
+                    
+                    <div class="form-group">
+                        <div class="form-control">
+                            <label for="buyer-name">Buyer Name:</label>
+                            <input type="text" id="buyer-name" placeholder="Full name" required>
+                        </div>
+                        
+                        <div class="form-control">
+                            <label for="buyer-contact">Contact Number:</label>
+                            <input type="tel" id="buyer-contact" placeholder="Phone number" required>
+                        </div>
+                        
+                        <div class="form-control">
+                            <label for="buyer-email">Email Address:</label>
+                            <input type="email" id="buyer-email" placeholder="Email address">
+                        </div>
+                    </div>
+                    
+                    <div class="form-control">
+                        <label for="buyer-address">Address:</label>
+                        <textarea id="buyer-address" rows="3" placeholder="Full address" required></textarea>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="step2-prev" class="btn btn-danger">Previous</button>
+                        <button id="step2-next" class="btn btn-primary">Next: Transfer Details</button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Transfer Details -->
+                <div class="form-step" id="step-3">
+                    <h3 class="mb-4">Transfer Details</h3>
+                    
+                    <div class="form-group">
+                        <div class="form-control">
+                            <label for="transfer-date">Transfer Date:</label>
+                            <input type="date" id="transfer-date" required>
+                        </div>
+                        
+                        <div class="form-control">
+                            <label for="payment-method">Payment Method:</label>
+                            <select id="payment-method" required>
+                                <option value="" disabled selected>Select Payment Method</option>
+                                <option value="cash">Cash</option>
+                                <option value="check">Check</option>
+                                <option value="bank-transfer">Bank Transfer</option>
+                                <option value="credit-card">Credit Card</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-control">
+                            <label for="delivery-method">Delivery Method:</label>
+                            <select id="delivery-method" required>
+                                <option value="" disabled selected>Select Delivery Method</option>
+                                <option value="pickup">Buyer Pickup</option>
+                                <option value="delivery">Farm Delivery</option>
+                                <option value="third-party">Third-Party Transport</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-control">
+                        <label for="transfer-notes">Additional Notes:</label>
+                        <textarea id="transfer-notes" rows="3" placeholder="Any special considerations or arrangements"></textarea>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="step3-prev" class="btn btn-danger">Previous</button>
+                        <button id="step3-next" class="btn btn-primary">Next: Review & Confirm</button>
+                    </div>
+                </div>
+                
+                <!-- Step 4: Review & Confirm -->
+                <div class="form-step" id="step-4">
+                    <h3 class="mb-4">Review Transfer Details</h3>
+                    
+                    <div class="transfer-summary">
+                        <h4>Selected Animals</h4>
+                        <div id="review-animals" class="selected-animals"></div>
+                        <div class="summary-row">
+                            <div><strong>Total Animals:</strong></div>
+                            <div id="review-count">0</div>
+                        </div>
+                        <div class="summary-row">
+                            <div><strong>Total Value:</strong></div>
+                            <div id="review-value">$0.00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="transfer-summary">
+                        <h4>Buyer Information</h4>
+                        <div class="summary-row">
+                            <div><strong>Name:</strong></div>
+                            <div id="review-buyer-name">-</div>
+                        </div>
+                        <div class="summary-row">
+                            <div><strong>Contact:</strong></div>
+                            <div id="review-buyer-contact">-</div>
+                        </div>
+                        <div class="summary-row">
+                            <div><strong>Email:</strong></div>
+                            <div id="review-buyer-email">-</div>
+                        </div>
+                        <div class="summary-row">
+                            <div><strong>Address:</strong></div>
+                            <div id="review-buyer-address">-</div>
+                        </div>
+                    </div>
+                    
+                    <div class="transfer-summary">
+                        <h4>Transfer Details</h4>
+                        <div class="summary-row">
+                            <div><strong>Transfer Date:</strong></div>
+                            <div id="review-transfer-date">-</div>
+                        </div>
+                        <div class="summary-row">
+                            <div><strong>Payment Method:</strong></div>
+                            <div id="review-payment-method">-</div>
+                        </div>
+                        <div class="summary-row">
+                            <div><strong>Delivery Method:</strong></div>
+                            <div id="review-delivery-method">-</div>
+                        </div>
+                        <div class="summary-row">
+                            <div><strong>Additional Notes:</strong></div>
+                            <div id="review-transfer-notes">-</div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="step4-prev" class="btn btn-danger">Previous</button>
+                        <button id="complete-transfer" class="btn btn-success">Complete Transfer</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div id="receipt-modal" class="receipt-modal">
+            <div class="receipt-content">
+              <div class="receipt-header">
+                <h2>Livestock Sales Receipt</h2>
+                <p>Receipt #: <span id="receipt-number"></span></p>
+                <p>Date: <span id="receipt-date"></span></p>
+              </div>
+        
+              <div class="receipt-info">
+                <h3>Seller Information</h3>
+                <p>Farm Name: Your Farm Name</p>
+                <p>Address: Your Farm Address</p>
+                <p>Contact: Your Contact Information</p>
+              </div>
+        
+              <div class="receipt-info">
+                <h3>Buyer Information</h3>
+                <p>Name: <span id="buyer-name-print"></span></p>
+                <p>Contact: <span id="buyer-contact-print"></span></p>
+                <p>Address: <span id="buyer-address-print"></span></p>
+              </div>
+        
+              <div class="receipt-items">
+                <h3>Purchased Items</h3>
+                <table class="receipt-table">
+                  <thead>
+                    <tr>
+                      <th>ID/Tag</th>
+                      <th>Description</th>
+                      <th>Price</th>
+                    </tr>
+                  </thead>
+                  <tbody id="receipt-items-body">
+                  </tbody>
+                </table>
+              </div>
+        
+              <div class="receipt-total">
+                Total Amount: $<span id="receipt-total"></span>
+              </div>
+        
+              <div class="receipt-info">
+                <p>Payment Method: <span id="payment-method-print"></span></p>
+                <p>Delivery Method: <span id="delivery-method-print"></span></p>
+              </div>
+        
+              <div class="receipt-footer">
+                <p>Thank you for your business!</p>
+                <p>This is a computer-generated receipt.</p>
+              </div>
+        
+              <div class="no-print" style="text-align: center;">
+                <button class="print-button" onclick="window.print()">Print Receipt</button>
+                <button class="print-button" onclick="closeReceipt()">Close</button>
+              </div>
+            </div>
+          </div>
+   
+    </div>
+    
+   <script>
+    // Store selected animals
+let selectedAnimals = [];
+let currentStep = 1;
+const totalSteps = 4;
+
+// DOM Element Selections
+const animalCheckboxes = document.querySelectorAll('.animal-select');
+const selectAllCheckbox = document.getElementById('select-all-checkbox');
+const selectAllBtn = document.getElementById('select-all-btn');
+const deselectAllBtn = document.getElementById('deselect-all-btn');
+const transferSelectedBtn = document.getElementById('transfer-selected-btn');
+const selectionSummary = document.getElementById('selection-summary');
+const selectedAnimalsContainer = document.getElementById('selected-animals');
+const selectedCountDisplay = document.getElementById('selected-count');
+const selectedValueDisplay = document.getElementById('selected-value');
+const multiStepForm = document.getElementById('multi-step-form');
+const progressBar = document.getElementById('progress-bar');
+const progressSteps = document.querySelectorAll('.progress-step');
+const cancelTransferBtn = document.getElementById('cancel-transfer');
+const completeTransferBtn = document.getElementById('complete-transfer');
+
+// Add event listeners to checkboxes
+function initializeCheckboxListeners() {
+    animalCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', handleSelection);
+    });
+
+    // Select all checkbox
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', function() {
+            animalCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+                const row = checkbox.closest('tr');
+                row.classList.toggle('selected-row', this.checked);
+            });
+            updateSelection();
+        });
+    }
+
+    // Select all button
+    if (selectAllBtn) {
+        selectAllBtn.addEventListener('click', function() {
+            animalCheckboxes.forEach(checkbox => {
+                checkbox.checked = true;
+                checkbox.closest('tr').classList.add('selected-row');
+            });
+            
+            if (selectAllCheckbox) {
+                selectAllCheckbox.checked = true;
+            }
+            updateSelection();
+        });
+    }
+
+    // Deselect all button
+    if (deselectAllBtn) {
+        deselectAllBtn.addEventListener('click', function() {
+            animalCheckboxes.forEach(checkbox => {
+                checkbox.checked = false;
+                checkbox.closest('tr').classList.remove('selected-row');
+            });
+            
+            if (selectAllCheckbox) {
+                selectAllCheckbox.checked = false;
+            }
+            updateSelection();
+        });
+    }
+}
+
+// Handle individual selection
+function handleSelection() {
+    const row = this.closest('tr');
+    
+    if (this.checked) {
+        row.classList.add('selected-row');
+    } else {
+        row.classList.remove('selected-row');
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked = false;
+        }
+    }
+    
+    // Check if all are selected
+    const allChecked = Array.from(animalCheckboxes).every(checkbox => checkbox.checked);
+    if (selectAllCheckbox) {
+        selectAllCheckbox.checked = allChecked;
+    }
+    
+    updateSelection();
+}
+
+// Update selection summary
+function updateSelection() {
+    selectedAnimals = [];
+    let totalValue = 0;
+    
+    animalCheckboxes.forEach((checkbox, index) => {
+        if (checkbox.checked) {
+            const row = checkbox.closest('tr');
+            const id = row.dataset.id;
+            const price = parseFloat(row.dataset.price);
+            
+            selectedAnimals.push({
+                id: id,
+                price: price,
+                details: row.cells[1].textContent + ' - ' + row.cells[3].textContent + ' ' + row.cells[5].textContent
+            });
+            
+            totalValue += price;
+        }
+    });
+    
+    // Update summary display
+    if (selectedAnimals.length > 0) {
+        if (selectionSummary) selectionSummary.classList.add('active');
+        displaySelectedAnimals();
+        if (selectedCountDisplay) selectedCountDisplay.textContent = selectedAnimals.length;
+        if (selectedValueDisplay) selectedValueDisplay.textContent = totalValue.toFixed(2);
+        if (transferSelectedBtn) {
+            transferSelectedBtn.disabled = false;
+        }
+    } else {
+        if (selectionSummary) selectionSummary.classList.remove('active');
+        if (transferSelectedBtn) {
+            transferSelectedBtn.disabled = true;
+        }
+    }
+    
+    // Update step 1 display also
+    updateStep1Display();
+}
+
+// Display selected animals in chips
+function displaySelectedAnimals() {
+    if (!selectedAnimalsContainer) return;
+    
+    selectedAnimalsContainer.innerHTML = '';
+    
+    selectedAnimals.forEach(animal => {
+        const chip = document.createElement('div');
+        chip.className = 'animal-chip';
+        chip.innerHTML = `
+            ${animal.id}: ${animal.details} ($${animal.price.toFixed(2)})
+            <button class="remove-selection" data-id="${animal.id}">&times;</button>
+        `;
+        selectedAnimalsContainer.appendChild(chip);
+    });
+    
+    // Add remove event listeners to chips
+    document.querySelectorAll('.remove-selection').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const idToRemove = this.dataset.id;
+            // Uncheck the corresponding checkbox
+            animalCheckboxes.forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                if (row.dataset.id === idToRemove) {
+                    checkbox.checked = false;
+                    row.classList.remove('selected-row');
+                }
+            });
+            updateSelection();
+        });
+    });
+}
+
+// Initialize multi-step form
+function initializeMultiStepForm() {
+    if (transferSelectedBtn) {
+        transferSelectedBtn.addEventListener('click', function() {
+            if (selectedAnimals.length === 0) {
+                alert('Please select at least one animal to transfer.');
+                return;
+            }
+            
+            // Show multi-step form
+            multiStepForm.classList.add('active');
+            
+            // Update step 1 display
+            updateStep1Display();
+            
+            // Set up step navigation
+            setupStepNavigation();
+        });
+    }
+    
+    if (cancelTransferBtn) {
+        cancelTransferBtn.addEventListener('click', function() {
+            multiStepForm.classList.remove('active');
+        });
+    }
+}
+
+// Update Step 1 display
+function updateStep1Display() {
+    const step1Animals = document.getElementById('step1-selected-animals');
+    const step1Count = document.getElementById('step1-selected-count');
+    const step1Value = document.getElementById('step1-selected-value');
+    
+    if (!step1Animals || !step1Count || !step1Value) return;
+    
+    step1Animals.innerHTML = '';
+    let totalValue = 0;
+    
+    selectedAnimals.forEach(animal => {
+        const chip = document.createElement('div');
+        chip.className = 'animal-chip';
+        chip.innerHTML = `
+            ${animal.id}: ${animal.details} ($${animal.price.toFixed(2)})
+        `;
+        step1Animals.appendChild(chip);
+        totalValue += animal.price;
+    });
+    
+    step1Count.textContent = selectedAnimals.length;
+    step1Value.textContent = totalValue.toFixed(2);
+}
+
+// Set up step navigation
+function setupStepNavigation() {
+    // Reset to first step
+    goToStep(1);
+    
+    // Step 1 next button
+    const step1Next = document.getElementById('step1-next');
+    if (step1Next) {
+        step1Next.addEventListener('click', function() {
+            goToStep(2);
+        });
+    }
+    
+    // Step 2 prev button
+    const step2Prev = document.getElementById('step2-prev');
+    if (step2Prev) {
+        step2Prev.addEventListener('click', function() {
+            goToStep(1);
+        });
+    }
+    
+    // Step 2 next button
+    const step2Next = document.getElementById('step2-next');
+    if (step2Next) {
+        step2Next.addEventListener('click', function() {
+            // Validate buyer info
+            const buyerName = document.getElementById('buyer-name').value;
+            const buyerContact = document.getElementById('buyer-contact').value;
+            
+            if (!buyerName || !buyerContact) {
+                alert('Please fill in required buyer information.');
+                return;
+            }
+            
+            goToStep(3);
+        });
+    }
+    
+    // Step 3 prev button
+    const step3Prev = document.getElementById('step3-prev');
+    if (step3Prev) {
+        step3Prev.addEventListener('click', function() {
+            goToStep(2);
+        });
+    }
+    
+    // Step 3 next button
+    const step3Next = document.getElementById('step3-next');
+    if (step3Next) {
+        step3Next.addEventListener('click', function() {
+            // Validate transfer details
+            const transferDate = document.getElementById('transfer-date').value;
+            const paymentMethod = document.getElementById('payment-method').value;
+            const deliveryMethod = document.getElementById('delivery-method').value;
+            
+            if (!transferDate || !paymentMethod || !deliveryMethod) {
+                alert('Please fill in all required transfer details.');
+                return;
+            }
+            
+            // Update review step
+            updateReviewStep();
+            goToStep(4);
+        });
+    }
+    
+    // Step 4 prev button
+    const step4Prev = document.getElementById('step4-prev');
+    if (step4Prev) {
+        step4Prev.addEventListener('click', function() {
+            goToStep(3);
+        });
+    }
+    
+    // Complete transfer button
+    if (completeTransferBtn) {
+        completeTransferBtn.addEventListener('click', function() {
+            completeTransfer();
+        });
+    }
+}
+
+// Go to specified step
+function goToStep(step) {
+    currentStep = step;
+    
+    // Hide all steps
+    document.querySelectorAll('.form-step').forEach(step => {
+        step.classList.remove('active');
+    });
+    
+    // Show current step
+    document.getElementById(`step-${currentStep}`).classList.add('active');
+    
+    // Update progress bar
+    updateProgressBar();
+}
+
+// Update progress bar
+function updateProgressBar() {
+    // Calculate progress percentage
+    const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+    progressBar.style.width = `${progressPercentage}%`;
+    
+    // Update step indicators
+    progressSteps.forEach((step, index) => {
+        const stepNum = index + 1;
+        
+        if (stepNum < currentStep) {
+            step.classList.add('completed');
+            step.classList.remove('active');
+        } else if (stepNum === currentStep) {
+            step.classList.add('active');
+            step.classList.remove('completed');
+        } else {
+            step.classList.remove('active', 'completed');
+        }
+    });
+}
+
+// Update review step with all information
+function updateReviewStep() {
+    const reviewAnimals = document.getElementById('review-animals');
+    const reviewCount = document.getElementById('review-count');
+    const reviewValue = document.getElementById('review-value');
+    
+    // Update animals section
+    reviewAnimals.innerHTML = '';
+    let totalValue = 0;
+    
+    selectedAnimals.forEach(animal => {
+        const chip = document.createElement('div');
+        chip.className = 'animal-chip';
+        chip.textContent = `${animal.id}: ${animal.details}`;
+        reviewAnimals.appendChild(chip);
+        totalValue += animal.price;
+    });
+    
+    reviewCount.textContent = selectedAnimals.length;
+    reviewValue.textContent = `$${totalValue.toFixed(2)}`;
+    
+    // Update buyer information
+    document.getElementById('review-buyer-name').textContent = document.getElementById('buyer-name').value;
+    document.getElementById('review-buyer-contact').textContent = document.getElementById('buyer-contact').value;
+    document.getElementById('review-buyer-email').textContent = document.getElementById('buyer-email').value || 'Not provided';
+    document.getElementById('review-buyer-address').textContent = document.getElementById('buyer-address').value;
+    
+    // Update transfer details
+    const transferDate = new Date(document.getElementById('transfer-date').value);
+    document.getElementById('review-transfer-date').textContent = transferDate.toLocaleDateString();
+    
+    const paymentMethodSelect = document.getElementById('payment-method');
+    const paymentMethod = paymentMethodSelect.options[paymentMethodSelect.selectedIndex].text;
+    document.getElementById('review-payment-method').textContent = paymentMethod;
+    
+    const deliveryMethodSelect = document.getElementById('delivery-method');
+    const deliveryMethod = deliveryMethodSelect.options[deliveryMethodSelect.selectedIndex].text;
+    document.getElementById('review-delivery-method').textContent = deliveryMethod;
+    
+    document.getElementById('review-transfer-notes').textContent = document.getElementById('transfer-notes').value || 'None';
+}
+
+// Complete transfer process
+function completeTransfer() {
+    // Here you would normally send data to server
+    // For demo purposes, we'll just show an alert
+    alert('Transfer completed successfully!');
+    
+    // Reset form and selections
+    resetAfterTransfer();
+}
+
+// Reset everything after transfer
+function resetAfterTransfer() {
+    // Hide multi-step form
+    multiStepForm.classList.remove('active');
+    
+    // Deselect all animals
+    animalCheckboxes.forEach(checkbox => {
+        checkbox.checked = false;
+        checkbox.closest('tr').classList.remove('selected-row');
+    });
+    
+    if (selectAllCheckbox) {
+        selectAllCheckbox.checked = false;
+    }
+    
+    // Clear selections
+    selectedAnimals = [];
+    updateSelection();
+    
+    // Reset form fields
+    document.getElementById('buyer-name').value = '';
+    document.getElementById('buyer-contact').value = '';
+    document.getElementById('buyer-email').value = '';
+    document.getElementById('buyer-address').value = '';
+    document.getElementById('transfer-date').value = '';
+    document.getElementById('payment-method').selectedIndex = 0;
+    document.getElementById('delivery-method').selectedIndex = 0;
+    document.getElementById('transfer-notes').value = '';
+}
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initializeCheckboxListeners();
+    initializeMultiStepForm();
+    
+    // Disable transfer button initially
+    if (transferSelectedBtn) {
+        transferSelectedBtn.disabled = true;
+    }
+});
+
+//receipt script
+// Add this to your existing JavaScript code
+
+// Function to generate random receipt number
+function generateReceiptNumber() {
+    const prefix = "RCP";
+    const timestamp = Date.now().toString().slice(-6);
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    return `${prefix}-${timestamp}-${random}`;
+}
+
+// Function to display receipt
+function showReceipt() {
+    const receiptModal = document.getElementById('receipt-modal');
+    const currentDate = new Date().toLocaleDateString();
+    const receiptNumber = generateReceiptNumber();
+
+    // Set receipt header information
+    document.getElementById('receipt-number').textContent = receiptNumber;
+    document.getElementById('receipt-date').textContent = currentDate;
+
+    // Set buyer information
+    document.getElementById('buyer-name-print').textContent = document.getElementById('buyer-name').value;
+    document.getElementById('buyer-contact-print').textContent = document.getElementById('buyer-contact').value;
+    document.getElementById('buyer-address-print').textContent = document.getElementById('buyer-address').value;
+
+    // Set payment and delivery method
+    const paymentMethodSelect = document.getElementById('payment-method');
+    const deliveryMethodSelect = document.getElementById('delivery-method');
+    document.getElementById('payment-method-print').textContent = paymentMethodSelect.options[paymentMethodSelect.selectedIndex].text;
+    document.getElementById('delivery-method-print').textContent = deliveryMethodSelect.options[deliveryMethodSelect.selectedIndex].text;
+
+    // Generate items table
+    const receiptItemsBody = document.getElementById('receipt-items-body');
+    receiptItemsBody.innerHTML = '';
+    let total = 0;
+
+    selectedAnimals.forEach(animal => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${animal.id}</td>
+            <td>${animal.details}</td>
+            <td>$${animal.price.toFixed(2)}</td>
+        `;
+        receiptItemsBody.appendChild(row);
+        total += animal.price;
+    });
+
+    // Set total amount
+    document.getElementById('receipt-total').textContent = total.toFixed(2);
+
+    // Show the modal
+    receiptModal.style.display = 'flex';
+}
+
+// Function to close receipt
+function closeReceipt() {
+    const receiptModal = document.getElementById('receipt-modal');
+    receiptModal.style.display = 'none';
+    resetAfterTransfer();
+}
+
+// Modify the completeTransfer function to show receipt before reset
+function completeTransfer() {
+    // Show success message
+    alert('Transfer completed successfully!');
+    
+    // Show receipt
+    showReceipt();
+}
+   </script>

@@ -3,227 +3,1950 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schedule Vaccination</title>
+    <title>Livestock Vaccination Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body, h1, table, input, button, select {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
+     * {
+   
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: #f5f5f5;
+    min-height: 100vh;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.form-container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 4000px;
+    margin: 20px auto;
+}
+
+.page-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 2.2em;
+    position: relative;
+}
+
+.form-section {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+    margin-left: 20px;
+}
+
+.card-header {
+    background: #f8f9fa;
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.card-title {
+    color: #2c3e50;
+    font-size: 1.3em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-title i {
+    color: #28a745;
+}
+
+.card-body {
+    padding: 10px;
+    margin-left: 20px;
+}
+
+.section-title {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    font-size: 1.3em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title i {
+    color: #28a745;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 0.95em;
+}
+
+.form-group input,
+.form-group select,
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background-color: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
+    outline: none;
+}
+
+.btn {
+    padding: 12px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    font-size: 16px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary, .search-btn {
+    background: #28a745;
+    color: white;
+}
+
+.btn-primary:hover, .search-btn:hover {
+    background: #218838;
+}
+
+.search-btn {
+    width: 100%;
+    padding: 12px 24px;
+    font-weight: 600;
+}
+
+.search-btn i {
+    margin-right: 8px;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-info, .view-btn {
+    background: #17a2b8;
+    color: white;
+}
+
+.btn-info:hover, .view-btn:hover {
+    background: #138496;
+}
+
+.btn-danger, .delete-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover, .delete-btn:hover {
+    background: #c82333;
+}
+
+.edit-btn {
+    background: #ffc107;
+    color: white;
+}
+
+.edit-btn:hover {
+    background: #e0a800;
+}
+
+/* Updated search filter container to match form styling */
+.search-filter-container {
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.search-box {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+.filter-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-select {
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background-color: white;
+    min-width: 150px;
+    transition: all 0.3s ease;
+}
+
+.filter-select:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
+    outline: none;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+    flex-wrap: wrap;
+}
+
+.table-container {
+    margin-top: 30px;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    min-width: 1500px;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+th {
+    background: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 600;
+    position: relative;
+    cursor: pointer;
+}
+
+th:hover {
+    background: #e9ecef;
+}
+
+th i {
+    margin-left: 5px;
+}
+
+tr:hover {
+    background: #f8f9fa;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.action-btn {
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+table img {
+    border: 1px solid #dee2e6;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-overdue {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.overdue-1-week {
+    background: #ffe0b2;
+    color: #e65100;
+}
+
+.overdue-2-weeks {
+    background: #ffccbc;
+    color: #bf360c;
+}
+
+.overdue-3-weeks {
+    background: #ef9a9a;
+    color: #b71c1c;
+}
+
+.rfid-tag {
+    background: #e0f7fa;
+    color: #006064;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+/* Modal Styles - Updated to match form container style */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 600px;
+    margin: 50px auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    color: #2c3e50;
+    font-size: 1.3em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.modal-footer {
+    padding: 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #343a40;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 5px;
+}
+
+.pagination button {
+    padding: 10px 15px;
+    border: 1px solid #dee2e6;
+    background: white;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.pagination button.active {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.pagination button:hover:not(.active) {
+    background: #f8f9fa;
+}
+
+.report-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.option-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        padding: 15px;
+    }
+    
+    .form-section {
+        padding: 15px;
+    }
+    
+    .search-filter-container {
+        padding: 15px;
+        flex-direction: column;
+    }
+    
+    .vaccination-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .button-group {
+        margin-left: 0;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .btn {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 20px auto;
+    }
+    
+    .modal-body,
+    .modal-header,
+    .modal-footer {
+        padding: 15px;
+    }
+}
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: #1e293b;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    animation: slideIn 0.5s ease-out forwards;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.stat-icon i {
+    color: white;
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover .stat-icon i {
+    animation: pulse 1s infinite;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.2;
+}
+
+.stat-label {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .stat-card {
+        padding: 1.25rem;
+    }
+
+    .stat-number {
+        font-size: 1.75rem;
+    }
+}
+/*styling the sidebar*/
+* {
+          
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: #e8f5e9; /* Light green background */
-            color: #2e7d32; /* Dark green text */
-            line-height: 1.6;
-            padding: 20px;
+            display: flex;
+            background: #f0f2f5;
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #1b5e20; /* Deep green title */
-        }
-
-        .form-section {
-            text-align: center;
-            margin-bottom: 20px;
-            background: #c8e6c9; /* Soft green form background */
-            padding: 15px;
-            border-radius: 8px;
-        }
-
-        label {
-            margin-right: 10px;
-            font-weight: bold;
-        }
-
-        input, select {
-            padding: 8px;
-            margin-right: 10px;
-            border: 1px solid #388e3c;
-            border-radius: 4px;
-            width: 200px;
-            background-color: #ffffff;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #388e3c; /* Dark green button */
+        .sidebar {
+            width: 280px;
+            background: #1b5e20;
+            min-height: 100vh;
             color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar.collapsed {
+            width: 70px;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 15px;
+            border-bottom: 1px solid #2e7d32;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .toggle-btn {
+            background: none;
             border: none;
-            border-radius: 4px;
+            color: white;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s ease;
+            padding: 5px;
+            font-size: 1.2rem;
         }
 
-        button:hover {
-            background-color: #2e7d32;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: #ffffff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            white-space: nowrap;
             overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+        .search-container {
+            position: relative;
+            margin: 10px 20px;
+            transition: opacity 0.3s ease;
         }
 
-        th {
-            background-color: #388e3c; /* Dark green header */
-            color: white;
+        .collapsed .search-container {
+            opacity: 0;
+            pointer-events: none;
         }
 
-       
-
-        tr:hover {
-            background-color: #c8e6c9; /* Soft green hover */
+        .search-bar {
+            width: 100%;
+            padding: 10px 35px 10px 15px;
+            border-radius: 20px;
+            border: 1px solid #2e7d32;
+            background: rgba(255, 255, 255, 0.9);
+            outline: none;
+            font-size: 0.95rem;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        .search-bar:focus {
+            border-color: #4caf50;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
         }
 
-        .view-details-btn {
-            background-color: #1976d2;
-            color: white;
-            border: none;
-            padding: 5px 10px;
+        .search-icon {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            font-size: 18px;
+            color: #2e7d32;
             cursor: pointer;
-            border-radius: 4px;
-            transition: background 0.3s ease;
         }
 
-        .view-details-btn:hover {
-            background-color: #1565c0;
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
         }
 
-        .export-section {
-            margin: 20px;
+        .nav-item {
+            margin: 4px 0;
+            position: relative;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+
+        .nav-item i {
+            width: 24px;
+            margin-right: 10px;
             text-align: center;
+        }
+
+        .collapsed .nav-item span,
+        .collapsed .submenu {
+            display: none;
+        }
+
+        .submenu {
+            list-style: none;
+            padding-left: 34px;
+            background: rgba(0, 0, 0, 0.1);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .submenu.active {
+            max-height: 500px;
+        }
+
+        .submenu a {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .nav-item:hover > a {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.has-submenu > a:after {
+            content: '\f105';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            margin-left: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item.has-submenu.active > a:after {
+            transform: rotate(90deg);
+        }
+
+        .collapsed .nav-item a:hover:before {
+            content: attr(data-title);
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #2e7d32;
+            padding: 5px 10px;
+            border-radius: 4px;
+            white-space: nowrap;
+            z-index: 1000;
+            margin-left: 10px;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
         }
     </style>
 </head>
 <body>
-    <h1>Schedule Vaccination</h1>
+   <!-- Sidebar -->
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Livestock Management</h2>
+            <button class="toggle-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="search" class="search-bar" placeholder="Search menu...">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="dashboard.html" data-title="Dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard Overview</span>
+                </a>
+            </li>
 
-    <div class="form-section">
-        <label for="cattle-id">Cattle ID:</label>
-        <input type="text" id="cattle-id" placeholder="Enter Cattle ID">
+            <li class="nav-item has-submenu">
+                <a href="#" data-title="Livestock">
+                    <i class="fas fa-cow"></i>
+                    <span>Livestock Inventory</span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="animals.html">Animals</a></li>
+                    <li><a href="breeds.html">Breeds</a></li>
+                    <li><a href="groups.html">Groups/Pens</a></li>
+                </ul>
+            </li>
 
-        <label for="vaccine">Vaccine:</label>
-        <input type="text" id="vaccine" placeholder="Enter Vaccine Name">
+            <li class="nav-item has-submenu">
+                <a href="#" data-title="Vaccine">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>Vaccine Management</span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="health-records.html">Health Records</a></li>
+                    <li><a href="schedule_vaccination.html">Vaccinations Schedule</a></li>
+                    <li><a href="vet-contacts.html">Veterinary Contacts</a></li>
+                </ul>
+            </li>
 
-        <label for="date">Date:</label>
-        <input type="date" id="date">
+            <li class="nav-item has-submenu">
+                <a href="#" data-title="Breeding">
+                    <i class="fas fa-baby"></i>
+                    <span>Breeding & Reproduction</span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="breeding-schedule.html">Breeding Schedule</a></li>
+                    <li><a href="pregnancy_records.html">Pregnancy Tracking</a></li>
+                    <li><a href="birth-records.html">Birth Records</a></li>
+                </ul>
+            </li>
 
-        <label for="reason">Reason:</label>
-        <input type="text" id="reason" placeholder="Enter Reason for Vaccination">
+            <li class="nav-item has-submenu">
+                <a href="#" data-title="Health">
+                    <i class="fas fa-drumstick-bite"></i>
+                    <span>Health Management</span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="feed-inventory.html">Feed Inventory</a></li>
+                    <li><a href="feeding-schedule.html">Feeding Schedule</a></li>
+                    <li><a href="nutrition-plans.html">Nutrition Plans</a></li>
+                </ul>
+            </li>
 
-        <button onclick="scheduleVaccination()">Schedule</button>
+            <li class="nav-item has-submenu">
+                <a href="#" data-title="Production">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Production & Performance</span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="weight-tracking.html">Weight Tracking</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item has-submenu">
+                <a href="#" data-title="Sales">
+                    <i class="fas fa-dollar-sign"></i>
+                    <span>Sales Management</span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="buyers.html">Buyers</a></li> 
+                    <li><a href="sellers.html">Sellers</a></li> 
+                    <li><a href="sales.html">Livestock Sale List</a></li>
+                    <li><a href="profit-analysis.html">Profit Analysis</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item has-submenu">
+                <a href="#" data-title="Reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports & Analytics</span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="health-reports.html">Health Reports</a></li>
+                    <li><a href="production-reports.html">Production Reports</a></li>
+                    <li><a href="financial-reports.html">Financial Reports</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item has-submenu">
+                <a href="#" data-title="Settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings & Configuration</span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="user-management.html">User Management</a></li>
+                    <li><a href="farm-details.html">Farm Details</a></li>
+                    <li><a href="system-preferences.html">System Preferences</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item has-submenu">
+                <a href="#" data-title="Help">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help & Support</span>
+                </a>
+                <ul class="submenu">
+                    <li><a href="user-guides.html">User Guides</a></li>
+                    <li><a href="contact-support.html">Contact Support</a></li>
+                </ul>
+            </li>
+        </ul>
     </div>
+  <!-- Main content -->
+  <div class="main-content">
+    <div class="container">
+        <h1 class="page-title">Livestock Vaccination Management</h1>
 
-    <table id="vaccination-table">
-        <thead>
-            <tr>
-                <th>Cattle ID</th>
-                <th>Vaccine</th>
-                <th>Date</th>
-                <th>Reason</th>
-                <th>Image</th>
+       
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #10b981;">
+                        <i class="fas fa-syringe"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">45</div>
+                        <div class="stat-label">Total Vaccinations</div>
+                    </div>
+                </div>
+    
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #f59e0b;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Pending Vaccinations</div>
+                    </div>
+                </div>
+    
+                <div class="stat-card">
+                    <div class="stat-icon" style="background-color: #ef4444;">
+                        <i class="fas fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Overdue Vaccinations</div>
+                    </div>
+                </div>
+    
                 
-            </tr>
-        </thead>
-        <tbody id="table-body">
-            <!-- Scheduled vaccinations will be added dynamically -->
-            <tr>
-                <td>12345</td>
-                <td>Anthrax</td>
-                <td>2025-01-30</td>
-                <td>Routine Vaccination to prevent outbreaks and ensure herd immunity</td>
-               
-            </tr>
-            <tr>
-                <td>67890</td>
-                <td>Rabies</td>
-                <td>2025-02-02</td>
-                <td>Vaccination for Rabies Prevention and to comply with health regulations</td>
-               
-            </tr>
-            <!-- Other rows here -->
-        </tbody>
-    </table>
+            </div>
+        </div>
 
-    <div class="export-section">
-        <label for="export-format">Export Vaccination Data:</label>
-        <select id="export-format">
-            <option value="excel">Export as Excel</option>
-            <option value="pdf">Export as PDF</option>
-        </select>
-        <button onclick="exportData()">Export</button>
+        <!-- Vaccination Management Table -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">
+                
+                    Vaccination Management
+                </h2>
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="openScheduleModal()">
+                        <i class="fas fa-plus"></i>
+                        Schedule Vaccination
+                    </button>
+                    <button class="btn btn-secondary" onclick="openAddVaccineModal()">
+                        <i class="fas fa-plus-circle"></i>
+                        Add New Vaccine
+                    </button>
+                    <button class="btn btn-info" onclick="openReportModal()">
+                        <i class="fas fa-download"></i>
+                        Download Report
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="search-filter-container">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" id="searchInput" placeholder="Search by ID, vaccine type..." onkeyup="filterTable()">
+                    </div>
+                    <div class="filter-group">
+                        <select class="filter-select" id="statusFilter" onchange="filterTable()">
+                            <option value="">All Statuses</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Overdue">All Overdue</option>
+                            <option value="Overdue (1 week)">Overdue (1 week)</option>
+                            <option value="Overdue (2 weeks)">Overdue (2 weeks)</option>
+                            <option value="Overdue (3+ weeks)">Overdue (3+ weeks)</option>
+                        </select>
+                        <select class="filter-select" id="vaccineFilter" onchange="filterTable()">
+                            <option value="">All Vaccines</option>
+                            <option value="FMD Vaccine">FMD Vaccine</option>
+                            <option value="Brucellosis">Brucellosis</option>
+                            <option value="Anthrax">Anthrax</option>
+                        </select>
+                        <select id="rfidStatus" class="filter-select" onchange="filterTable()">
+                            <option value="">All</option>
+                            <option value="with">With RFID</option>
+                            <option value="without">Without RFID</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="vaccinationTable">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)">Animal ID </th>
+                                <th onclick="sortTable(1)">RFID Tag </th>
+                                <th onclick="sortTable(2)">Vaccine Type </th>
+                                <th onclick="sortTable(3)">Due Date </th>
+                                <th onclick="sortTable(4)">Status</th>
+                                <th onclick="sortTable(5)">Administered By</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>LV001</td>
+                                <td><span class="rfid-tag"><i class="fas fa-microchip"></i> RF4582A91</span></td>
+                                <td>FMD Vaccine</td>
+                                <td>2024-03-01</td>
+                                <td>
+                                    <span class="status-badge status-pending">
+                                        <i class="fas fa-clock"></i>
+                                        Pending
+                                    </span>
+                                </td>
+                                <td>Not Assigned</td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="markAsComplete('LV001')">
+                                        Complete
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>LV002</td>
+                                <td><span class="rfid-tag"><i class="fas fa-microchip"></i> RF4622B32</span></td>
+                                <td>Brucellosis</td>
+                                <td>2024-02-17</td>
+                                <td>
+                                    <span class="status-badge overdue-1-week">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        Overdue (1 week)
+                                    </span>
+                                </td>
+                                <td>Not Assigned</td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="markAsComplete('LV002')">
+                                        Complete
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>LV003</td>
+                                <td><span class="rfid-tag"><i class="fas fa-microchip"></i> RF4701C43</span></td>
+                                <td>FMD Vaccine</td>
+                                <td>2024-02-15</td>
+                                <td>
+                                    <span class="status-badge status-completed">
+                                        <i class="fas fa-check"></i>
+                                        Completed
+                                    </span>
+                                </td>
+                                <td>Dr. Smith</td>
+                                <td>
+                                    <button class="btn btn-secondary" onclick="viewDetails('LV003')">
+                                        Details
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>LV004</td>
+                                <td><span class="rfid-tag"><i class="fas fa-microchip"></i> RF4750D76</span></td>
+                                <td>Brucellosis</td>
+                                <td>2024-02-10</td>
+                                <td>
+                                    <span class="status-badge status-completed">
+                                        <i class="fas fa-check"></i>
+                                        Completed
+                                    </span>
+                                </td>
+                                <td>Dr. Johnson</td>
+                                <td>
+                                    <button class="btn btn-secondary" onclick="viewDetails('LV004')">
+                                        Details
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>LV005</td>
+                                <td><span class="rfid-tag"><i class="fas fa-microchip"></i> RF4812E19</span></td>
+                                <td>Anthrax</td>
+                                <td>2024-02-05</td>
+                                <td>
+                                    <span class="status-badge overdue-3-weeks">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        Overdue (3+ weeks)
+                                    </span>
+                                </td>
+                                <td>Not Assigned</td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="markAsComplete('LV005')">
+                                        Complete
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>LV006</td>
+                                <td><span class="rfid-tag"><i class="fas fa-microchip"></i> RF4890F23</span></td>
+                                <td>FMD Vaccine</td>
+                                <td>2024-02-12</td>
+                                <td>
+                                    <span class="status-badge overdue-2-weeks">
+                                        <i class="fas fa-exclamation"></i>
+                                        Overdue (2 weeks)
+                                    </span>
+                                </td>
+                                <td>Not Assigned</td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="markAsComplete('LV006')">
+                                        Complete
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>LV007</td>
+                                <td><span class="rfid-tag"><i class="fas fa-microchip"></i> RF4932G85</span></td>
+                                <td>Anthrax</td>
+                                <td>2024-03-05</td>
+                                <td>
+                                    <span class="status-badge status-pending">
+                                        <i class="fas fa-clock"></i>
+                                        Pending
+                                    </span>
+                                </td>
+                                <td>Not Assigned</td>
+                                <td>
+                                    <button class="btn btn-primary" onclick="markAsComplete('LV007')">
+                                        Complete
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <button onclick="changePage(1)" class="active">1</button>
+                    <button onclick="changePage(2)">2</button>
+                    <button onclick="changePage(3)">3</button>
+                    <button onclick="changePage('next')">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
+    <!-- Schedule Vaccination Modal -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="card-title">Schedule Vaccination</h2>
+                <button class="close-btn" onclick="closeScheduleModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="scheduleForm">
+                    <div class="form-group">
+                        <label for="animalId">Animal ID</label>
+                        <select id="animalId" class="form-control" required>
+                            <option value="">Select Animal</option>
+                            <option value="LV001">LV001</option>
+                            <option value="LV002">LV002</option>
+                            <option value="LV003">LV003</option>
+                            <option value="LV005">LV005</option>
+                            <option value="LV007">LV007</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rfidTag">RFID Tag</label>
+                        <input type="text" id="rfidTag" class="form-control" placeholder="RF0000000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="vaccineType">Vaccine Type</label>
+                        <select id="vaccineType" class="form-control" required>
+                            <option value="">Select Vaccine</option>
+                            <option value="fmd">FMD Vaccine</option>
+                            <option value="brucellosis">Brucellosis</option>
+                            <option value="anthrax">Anthrax</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dueDate">Due Date</label>
+                        <input type="date" id="dueDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignedTo">Assigned To</label>
+                        <select id="assignedTo" class="form-control">
+                            <option value="">Not Assigned</option>
+                            <option value="Dr. Smith">Dr. Smith</option>
+                            <option value="Dr. Johnson">Dr. Johnson</option>
+                            <option value="Dr. Williams">Dr. Williams</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <textarea id="notes" class="form-control" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeScheduleModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="scheduleVaccination()">Schedule</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Report Modal -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="card-title">Download Vaccination Report</h2>
+                <button class="close-btn" onclick="closeReportModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="report-options">
+                    <div class="form-group">
+                        <label>Report Type</label>
+                        <div class="option-group">
+                            <label>
+                                <input type="radio" name="reportType" value="all" checked> All Vaccinations
+                            </label>
+                            <label>
+                                <input type="radio" name="reportType" value="pending"> Pending Only
+                            </label>
+                            <label>
+                                <input type="radio" name="reportType" value="overdue"> Overdue Only
+                            </label>
+                            <label>
+                                <input type="radio" name="reportType" value="completed"> Completed Only
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Date Range</label>
+                        <div class="option-group">
+                            <div>
+                                <label for="startDate">Start Date</label>
+                                <input type="date" id="startDate" class="form-control">
+                            </div>
+                            <div>
+                                <label for="endDate">End Date</label>
+                                <input type="date" id="endDate" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Format</label>
+                        <div class="option-group">
+                            <label>
+                                <input type="radio" name="format" value="pdf" checked> PDF
+                            </label>
+                            <label>
+                                <input type="radio" name="format" value="excel"> Excel
+                            </label>
+                            <label>
+                                <input type="radio" name="format" value="csv"> CSV
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Include</label>
+                        <div class="option-group">
+                            <label>
+                                <input type="checkbox" name="include" value="details" checked> Animal Details
+                            </label>
+                            <label>
+                                <input type="checkbox" name="include" value="notes" checked> Notes
+                            </label>
+                            <label>
+                                <input type="checkbox" name="include" value="summary" checked> Summary Stats
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeReportModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="downloadReport()">Download</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Vaccine Modal -->
+    <div id="addVaccineModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="card-title">Add New Vaccine</h2>
+                <button class="close-btn" onclick="closeAddVaccineModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addVaccineForm">
+                    <div class="form-group">
+                        <label for="vaccineName">Vaccine Name</label>
+                        <input type="text" id="vaccineName" class="form-control" placeholder="Enter Vaccine Name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="vaccineNotes">Notes</label>
+                        <textarea id="vaccineNotes" class="form-control" rows="3" placeholder="Additional Notes"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAddVaccineModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="addNewVaccine()">Add Vaccine</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
     <script>
-        function scheduleVaccination() {
-            let cattleId = document.getElementById('cattle-id').value;
-            let vaccine = document.getElementById('vaccine').value;
-            let date = document.getElementById('date').value;
-            let reason = document.getElementById('reason').value;
+      // Modal Functions
+function openScheduleModal() {
+    document.getElementById('scheduleModal').style.display = 'block';
+}
+
+function closeScheduleModal() {
+    document.getElementById('scheduleModal').style.display = 'none';
+}
+
+function openReportModal() {
+    document.getElementById('reportModal').style.display = 'block';
+}
+
+function closeReportModal() {
+    document.getElementById('reportModal').style.display = 'none';
+}
+
+function scheduleVaccination() {
+    // Get form values
+    const animalId = document.getElementById('animalId').value;
+    const rfidTag = document.getElementById('rfidTag').value;
+    const vaccineType = document.getElementById('vaccineType').value;
+    const dueDate = document.getElementById('dueDate').value;
+    const assignedTo = document.getElementById('assignedTo').value;
+    const notes = document.getElementById('notes').value;
+
+    // Validate form
+    if (!animalId || !rfidTag || !vaccineType || !dueDate) {
+        alert('Please fill in all required fields');
+        return;
+    }
+
+    // Here you would typically send this data to your backend
+    console.log('Scheduling vaccination:', {
+        animalId,
+        rfidTag,
+        vaccineType,
+        dueDate,
+        assignedTo,
+        notes
+    });
+
+    // For demo purposes, add to table
+    addVaccinationToTable(animalId, rfidTag, vaccineType, dueDate, assignedTo);
+
+    // Close modal
+    closeScheduleModal();
+
+    // Reset form
+    document.getElementById('scheduleForm').reset();
+
+    // Show success message
+    alert('Vaccination scheduled successfully!');
+}
+
+function addVaccinationToTable(animalId, rfidTag, vaccineType, dueDate, assignedTo) {
+    const table = document.getElementById('vaccinationTable').getElementsByTagName('tbody')[0];
+    const newRow = table.insertRow();
+    
+    // Format vaccine type
+    let formattedVaccineType = vaccineType;
+    if (vaccineType === 'fmd') formattedVaccineType = 'FMD Vaccine';
+    if (vaccineType === 'brucellosis') formattedVaccineType = 'Brucellosis';
+    if (vaccineType === 'anthrax') formattedVaccineType = 'Anthrax';
+    
+    // Create cells
+    const cell1 = newRow.insertCell(0);
+    const cell2 = newRow.insertCell(1);
+    const cell3 = newRow.insertCell(2);
+    const cell4 = newRow.insertCell(3);
+    const cell5 = newRow.insertCell(4);
+    const cell6 = newRow.insertCell(5);
+    const cell7 = newRow.insertCell(6);
+    
+    // Populate cells
+    cell1.innerHTML = animalId;
+    cell2.innerHTML = `<span class="rfid-tag"><i class="fas fa-microchip"></i> ${rfidTag}</span>`;
+    cell3.innerHTML = formattedVaccineType;
+    cell4.innerHTML = dueDate;
+    cell5.innerHTML = `<span class="status-badge status-pending">
+                        <i class="fas fa-clock"></i>
+                        Pending
+                      </span>`;
+    cell6.innerHTML = assignedTo || 'Not Assigned';
+    cell7.innerHTML = `<button class="btn btn-primary" onclick="markAsComplete('${animalId}')">
+                        Complete
+                      </button>`;
+                      
+    // Update stats
+    updateStatistics();
+}
+
+function downloadReport() {
+    // Get report options
+    const reportType = document.querySelector('input[name="reportType"]:checked').value;
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    const format = document.querySelector('input[name="format"]:checked').value;
+    const includeOptions = Array.from(document.querySelectorAll('input[name="include"]:checked')).map(el => el.value);
+
+    // Validate dates if selected
+    if ((startDate && !endDate) || (!startDate && endDate)) {
+        alert('Please select both start and end dates or leave both empty');
+        return;
+    }
+
+    // Here you would typically generate and download the report
+    console.log('Downloading report with options:', {
+        reportType,
+        dateRange: { startDate, endDate },
+        format,
+        include: includeOptions
+    });
+
+    // Simulate report generation
+    const reportData = generateReportData(reportType, startDate, endDate, includeOptions);
+    
+    // Close modal
+    closeReportModal();
+
+    // Simulate download
+    simulateDownload(format, reportData);
+}
+
+function generateReportData(reportType, startDate, endDate, includeOptions) {
+    // In a real application, you would filter data based on these criteria
+    // For demo purposes, returning sample data
+    const table = document.getElementById('vaccinationTable');
+    const rows = Array.from(table.getElementsByTagName('tr')).slice(1); // Skip header
+    
+    let filteredRows = rows;
+    
+    // Filter by status
+    if (reportType === 'pending') {
+        filteredRows = rows.filter(row => row.cells[4].textContent.includes('Pending'));
+    } else if (reportType === 'overdue') {
+        filteredRows = rows.filter(row => row.cells[4].textContent.includes('Overdue'));
+    } else if (reportType === 'completed') {
+        filteredRows = rows.filter(row => row.cells[4].textContent.includes('Completed'));
+    }
+    
+    // Filter by date (in a real app)
+    if (startDate && endDate) {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        
+        filteredRows = filteredRows.filter(row => {
+            const rowDate = new Date(row.cells[3].textContent);
+            return rowDate >= start && rowDate <= end;
+        });
+    }
+    
+    // Format data based on included options
+    const reportData = filteredRows.map(row => {
+        const data = {
+            animalId: row.cells[0].textContent,
+            rfidTag: row.cells[1].textContent.replace(/[^\w]/g, ''), // Extract just the tag
+            vaccineType: row.cells[2].textContent,
+            dueDate: row.cells[3].textContent,
+            status: row.cells[4].textContent.trim().replace(/\s+/g, ' '), // Clean up whitespace
+            administeredBy: row.cells[5].textContent
+        };
+        
+        // Add additional info based on include options
+        if (includeOptions.includes('details')) {
+            // In a real app, you'd fetch additional animal details
+            data.animalDetails = {
+                species: 'Cattle',
+                breed: 'Holstein',
+                age: '3 years',
+                weight: '650 kg'
+            };
+        }
+        
+        if (includeOptions.includes('notes')) {
+            // In a real app, you'd fetch notes for this vaccination
+            data.notes = 'Regular checkup required post-vaccination';
+        }
+        
+        return data;
+    });
+    
+    // Add summary if requested
+    if (includeOptions.includes('summary')) {
+        const summary = {
+            totalCount: reportData.length,
+            byStatus: {
+                pending: reportData.filter(d => d.status.includes('Pending')).length,
+                completed: reportData.filter(d => d.status.includes('Completed')).length,
+                overdue: reportData.filter(d => d.status.includes('Overdue')).length
+            },
+            byVaccine: {
+                fmd: reportData.filter(d => d.vaccineType.includes('FMD')).length,
+                brucellosis: reportData.filter(d => d.vaccineType.includes('Brucellosis')).length,
+                anthrax: reportData.filter(d => d.vaccineType.includes('Anthrax')).length
+            }
+        };
+        
+        return { data: reportData, summary };
+    }
+    
+    return { data: reportData };
+}
+
+function simulateDownload(format, data) {
+    // In a real app, you would create and download the actual file
+    // For this demo, we'll just show an alert
+    const formattedData = JSON.stringify(data, null, 2);
+    console.log('Report data:', formattedData);
+    
+    let fileName = `vaccination_report_${new Date().toISOString().split('T')[0]}`;
+    
+    switch(format) {
+        case 'pdf':
+            fileName += '.pdf';
+            break;
+        case 'excel':
+            fileName += '.xlsx';
+            break;
+        case 'csv':
+            fileName += '.csv';
+            break;
+    }
+    
+    alert(`Report "${fileName}" is being generated in ${format.toUpperCase()} format and will download shortly.`);
+}
+
+function markAsComplete(animalId) {
+    const table = document.getElementById('vaccinationTable');
+    const rows = table.getElementsByTagName('tr');
+    
+    // Find the row with the matching animal ID
+    for (let i = 1; i < rows.length; i++) {
+        if (rows[i].cells[0].textContent === animalId) {
+            // Update status cell
+            rows[i].cells[4].innerHTML = `
+                <span class="status-badge status-completed">
+                    <i class="fas fa-check"></i>
+                    Completed
+                </span>
+            `;
             
-            if (!cattleId || !vaccine || !date || !reason) {
-                alert('Please fill all fields');
-                return;
+            // Update button to "Details"
+            rows[i].cells[6].innerHTML = `
+                <button class="btn btn-secondary" onclick="viewDetails('${animalId}')">
+                    Details
+                </button>
+            `;
+            
+            // Update admin by field if it was "Not Assigned"
+            if (rows[i].cells[5].textContent.trim() === 'Not Assigned') {
+                // Get a default vet (in a real app, this would be the current user)
+                const vets = ['Dr. Smith', 'Dr. Johnson', 'Dr. Williams'];
+                const randomVet = vets[Math.floor(Math.random() * vets.length)];
+                rows[i].cells[5].textContent = randomVet;
             }
             
-            let table = document.getElementById('table-body');
-            let row = table.insertRow();
-            row.insertCell(0).innerText = cattleId;
-            row.insertCell(1).innerText = vaccine;
-            row.insertCell(2).innerText = date;
-            row.insertCell(3).innerText = reason;
-            let actionCell = row.insertCell(4);
-            let viewButton = document.createElement('button');
-            viewButton.innerText = 'View Details';
-            viewButton.classList.add('view-details-btn');
-            viewButton.onclick = function() { viewDetails(cattleId); };
-            actionCell.appendChild(viewButton);
+            // Show success message
+            alert(`Vaccination marked as complete for animal ${animalId}`);
+            
+            // Update statistics
+            updateStatistics();
+            
+            return;
         }
+    }
+    
+    alert(`Animal ID ${animalId} not found in the table.`);
+}
 
-        function viewDetails(cattleId) {
-            window.location.href = `history.html?cattleId=${cattleId}`; // Redirect to the history page with cattleId as a query parameter
+function viewDetails(animalId) {
+    // In a real app, you would open a details modal or navigate to a details page
+    // For this demo, we'll just show an alert with some sample data
+    
+    const details = {
+        animalId: animalId,
+        species: 'Cattle',
+        breed: 'Holstein',
+        age: '3 years',
+        weight: '650 kg',
+        vaccinationHistory: [
+            { date: '2023-08-15', vaccine: 'FMD Vaccine', administrator: 'Dr. Smith' },
+            { date: '2023-11-20', vaccine: 'Brucellosis', administrator: 'Dr. Johnson' }
+        ],
+        notes: 'Animal is in good health with no adverse reactions to previous vaccinations.'
+    };
+    
+    console.log('Animal details:', details);
+    alert(`Viewing details for animal ${animalId}. Check console for complete details.`);
+}
+
+function filterTable() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const statusFilter = document.getElementById('statusFilter').value;
+    const vaccineFilter = document.getElementById('vaccineFilter').value;
+    
+    const table = document.getElementById('vaccinationTable');
+    const rows = table.getElementsByTagName('tr');
+    
+    for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const animalId = row.cells[0].textContent.toLowerCase();
+        const rfidTag = row.cells[1].textContent.toLowerCase();
+        const vaccineType = row.cells[2].textContent;
+        const status = row.cells[4].textContent;
+        
+        // Check if the row passes all filters
+        const matchesSearch = animalId.includes(searchInput) || 
+                             rfidTag.includes(searchInput) || 
+                             vaccineType.toLowerCase().includes(searchInput);
+                             
+        const matchesStatus = !statusFilter || status.includes(statusFilter);
+        const matchesVaccine = !vaccineFilter || vaccineType === vaccineFilter;
+        
+        // Show or hide the row based on filter results
+        row.style.display = (matchesSearch && matchesStatus && matchesVaccine) ? '' : 'none';
+    }
+}
+
+function sortTable(n) {
+    let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("vaccinationTable");
+    switching = true;
+    // Set the sorting direction to ascending
+    dir = "asc";
+    
+    // Update sort icons
+    const headers = table.getElementsByTagName('th');
+    for (let i = 0; i < headers.length; i++) {
+        if (i !== n) {
+            // Reset other columns
+            headers[i].querySelector('i').className = 'fas fa-sort';
         }
-
-        function exportData() {
-            let format = document.getElementById('export-format').value;
-            if (format === 'excel') {
-                exportToExcel();
-            } else if (format === 'pdf') {
-                exportToPDF();
+    }
+    
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+        
+        // Skip header row
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            
+            // Get elements to compare
+            x = rows[i].getElementsByTagName("TD")[n];
+            y = rows[i + 1].getElementsByTagName("TD")[n];
+            
+            // Get the text content for comparison
+            let xContent = x.textContent || x.innerText;
+            let yContent = y.textContent || y.innerText;
+            
+            // Special handling for date columns
+            if (n === 3) { // Due Date column
+                xContent = new Date(xContent);
+                yContent = new Date(yContent);
+            }
+            
+            // Compare based on direction
+            if (dir == "asc") {
+                if (xContent > yContent) {
+                    shouldSwitch = true;
+                    break;
+                }
+            } else if (dir == "desc") {
+                if (xContent < yContent) {
+                    shouldSwitch = true;
+                    break;
+                }
             }
         }
-
-        function exportToExcel() {
-            let table = document.getElementById('vaccination-table');
-            let html = table.outerHTML;
-            let a = document.createElement('a');
-            a.href = 'data:application/vnd.ms-excel,' + encodeURIComponent(html);
-            a.download = 'vaccination_schedule.xls';
-            a.click();
+        
+        if (shouldSwitch) {
+            // Make the switch and mark that a switch has been done
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            // Each time a switch is done, increase switchcount by 1
+            switchcount++;
+        } else {
+            // If no switching has been done AND the direction is "asc",
+            // set the direction to "desc" and run the while loop again.
+            if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
+            } else {
+                // Update sort icon based on direction
+                const icon = headers[n].querySelector('i');
+                icon.className = dir === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
+            }
         }
+    }
+}
 
-        function exportToPDF() {
-            let doc = new jsPDF();
-            doc.autoTable({ html: '#vaccination-table' });
-            doc.save('vaccination_schedule.pdf');
+function changePage(page) {
+    // In a real app, this would perform pagination
+    // For this demo, we'll just update the active button
+    
+    const buttons = document.querySelectorAll('.pagination button');
+    buttons.forEach(button => button.classList.remove('active'));
+    
+    if (page === 'next') {
+        // Find currently active page
+        let activeIndex = 0;
+        buttons.forEach((button, index) => {
+            if (button.classList.contains('active')) {
+                activeIndex = index;
+            }
+        });
+        
+        // Activate next page if not the last one
+        if (activeIndex < buttons.length - 2) { // -2 because last button is "Next"
+            buttons[activeIndex + 1].classList.add('active');
+        } else {
+            buttons[activeIndex].classList.add('active');
         }
-    </script>
+    } else {
+        // Activate specified page
+        buttons[page - 1].classList.add('active');
+    }
+    
+    // In a real application, you would load the appropriate data for this page
+    console.log(`Loading page ${page}`);
+}
 
-    <!-- Include jsPDF and jsPDF-AutoTable for PDF export -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-</body>
-</html>
+function updateStatistics() {
+    const table = document.getElementById('vaccinationTable');
+    const rows = Array.from(table.getElementsByTagName('tr')).slice(1); // Skip header
+    
+    // Count different statuses
+    const stats = {
+        total: rows.length,
+        pending: 0,
+        completed: 0,
+        overdue: 0,
+        rfidTracked: 0
+    };
+    
+    rows.forEach(row => {
+        const status = row.cells[4].textContent;
+        const rfidTag = row.cells[1].textContent;
+        
+        if (status.includes('Pending')) {
+            stats.pending++;
+        } else if (status.includes('Completed')) {
+            stats.completed++;
+        } else if (status.includes('Overdue')) {
+            stats.overdue++;
+        }
+        
+        if (rfidTag.includes('RF')) {
+            stats.rfidTracked++;
+        }
+    });
+    
+    // Update stat cards
+    document.querySelector('.stat-card:nth-child(1) .stat-number').textContent = stats.total;
+    document.querySelector('.stat-card:nth-child(2) .stat-number').textContent = stats.pending;
+    document.querySelector('.stat-card:nth-child(3) .stat-number').textContent = stats.overdue;
+    document.querySelector('.stat-card:nth-child(4) .stat-number').textContent = stats.rfidTracked;
+}
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', function() {
+    updateStatistics();
+    
+    // Set today's date as min date for the due date in schedule form
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('dueDate').min = today;
+    
+    // Set default date range for reports (last 30 days)
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    document.getElementById('startDate').value = thirtyDaysAgo.toISOString().split('T')[0];
+    document.getElementById('endDate').value = today;
+    
+    // Add validation to RFID tag input
+    document.getElementById('rfidTag').addEventListener('input', function(e) {
+        let value = e.target.value.toUpperCase();
+        if (!value.startsWith('RF')) {
+            value = 'RF' + value;
+        }
+        // Allow only letters and numbers after RF
+        value = 'RF' + value.substring(2).replace(/[^A-Z0-9]/g, '');
+        e.target.value = value;
+    });
+    
+    // Auto-populate RFID when animal is selected
+    document.getElementById('animalId').addEventListener('change', function(e) {
+        const animalId = e.target.value;
+        if (animalId) {
+            // In a real app, you'd look up the RFID in your database
+            // For this demo, we'll generate one
+            const randomNum = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+            const randomChar = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            const randomChar2 = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+            document.getElementById('rfidTag').value = `RF${randomNum}${randomChar}${randomChar2}`;
+        } else {
+            document.getElementById('rfidTag').value = '';
+        }
+    });
+});
+
+function openAddVaccineModal() {
+    document.getElementById('addVaccineModal').style.display = 'block';
+}
+
+function closeAddVaccineModal() {
+    document.getElementById('addVaccineModal').style.display = 'none';
+}
+
+function addNewVaccine() {
+    const vaccineName = document.getElementById('vaccineName').value;
+    const vaccineType = document.getElementById('vaccineType').value;
+    const vaccineNotes = document.getElementById('vaccineNotes').value;
+
+    // Validate form
+    if (!vaccineName || !vaccineType) {
+        alert('Please fill in all required fields');
+        return;
+    }
+
+    // Here you would typically send this data to your backend
+    console.log('Adding new vaccine:', {
+        vaccineName,
+        vaccineType,
+        vaccineNotes
+    });
+
+    // Close modal
+    closeAddVaccineModal();
+
+    // Reset form
+    document.getElementById('addVaccineForm').reset();
+
+    // Show success message
+    alert('New vaccine added successfully!');
+}
+</SCRIPT>
+

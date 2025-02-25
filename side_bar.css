@@ -1,0 +1,199 @@
+/* sidebar.css */
+.sidebar {
+    width: 280px;
+    background: #1b5e20;
+    min-height: 100vh;
+    color: white;  
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar-header {
+    padding: 0 20px 15px;
+    border-bottom: 1px solid #2e7d32;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.2rem;
+}
+
+.sidebar-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-container {
+    position: relative;
+    margin: 10px 20px;
+    transition: opacity 0.3s ease;
+}
+
+.collapsed .search-container {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 10px 35px 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #2e7d32;
+    background: rgba(255, 255, 255, 0.9);
+    outline: none;
+    font-size: 0.95rem;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.search-bar:focus {
+    border-color: #4caf50;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+.search-icon {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-size: 18px;
+    color: #2e7d32;
+    cursor: pointer;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.nav-item {
+    margin: 4px 0;
+    position: relative;
+}
+
+.nav-item a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.nav-item i {
+    width: 24px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.collapsed .nav-item span,
+.collapsed .submenu {
+    display: none;
+}
+
+.submenu {
+    list-style: none;
+    padding-left: 34px;
+    background: rgba(0, 0, 0, 0.1);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.submenu.active {
+    max-height: 500px;
+}
+
+.submenu a {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.nav-item:hover > a {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-item.has-submenu > a:after {
+    content: '\f105';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.nav-item.has-submenu.active > a:after {
+    transform: rotate(90deg);
+}
+
+.collapsed .nav-item a:hover:before {
+    content: attr(data-title);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #2e7d32;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 1000;
+    margin-left: 10px;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+/* Layout styles */
+body {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+/* Active link styles */
+.nav-item a.active,
+.submenu a.active {
+    background: rgba(255, 255, 255, 0.2);
+    font-weight: bold;
+}

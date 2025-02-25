@@ -1,27 +1,4 @@
-<?php
-// Include database connection and Farmer class
-include 'Farmer.php';
-include('includes/connect.php');
 
-// Create Farmer instance
-$farmer = new Farmer($con);
-
-// Handle form submission for registration
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
-    $farmer_id = $_POST['full_name'];
-    $phone_number = $_POST['phone_number'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    $result = $farmer->register($farmer_id, $phone_number, $email, $password);
-    if ($result) {
-        header("Location: login.php");
-        exit();
-    } else {
-        echo "Registration failed!";
-    }
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -217,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
             <!-- Registration Form -->
             <div class="form-section" id="registerForm">
                 <h1>Farmer Registration</h1>
-                <form method="POST" action="registration.php">
+                <form method="POST" action="registration.html">
                     
                     <div class="input-group">
                     <label>Full Name<span class="required">*</span></label>
@@ -253,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
                     <button type="submit" name="register">Create Account</button>
                     
                     <div class="switch-form">
-                        Already have an account? <a href="login.php">Login here</a>
+                        Already have an account? <a href="login.html">Login here</a>
                     </div>
                 </form>
             </div>

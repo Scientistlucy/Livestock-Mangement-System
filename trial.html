@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livestock Mortality Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --success-color: #2ecc71;
+            --warning-color: #f1c40f;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: var(--primary-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .dashboard-title {
+            font-size: 2.5em;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-subtitle {
+            color: var(--secondary-color);
+            font-size: 1.1em;
+        }
+
+        .filters-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .filter-group select:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .chart-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .chart-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .chart-subtitle {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        .chart-wrapper {
+            height: 400px;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .filters-container {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .chart-wrapper {
+                height: 300px;
+            }
+
+            .dashboard-title {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Livestock Mortality Analytics Dashboard</h1>
+            <p class="dashboard-subtitle">Comprehensive view of livestock mortality data by year and month</p>
+        </div>
+
+        <div class="filters-container">
+            <div class="filter-group">
+                <label>Year</label>
+                <select id="yearSelect">
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                    <option value="2021">2021</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>View Type</label>
+                <select id="viewSelect">
+                    <option value="monthly">Monthly View</option>
+                    <option value="yearly">Yearly Summary</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Livestock Type</label>
+                <select id="livestockSelect">
+                    <option value="all">All Types</option>
+                    <option value="cattle">Cattle</option>
+                    <option value="sheep">Sheep</option>
+                    <option value="pigs">Pigs</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <div class="chart-header">
+                <h2 class="chart-title">Mortality Analysis</h2>
+                <p class="chart-subtitle" id="chartSubtitle">Analyzing mortality trends over time</p>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="mortalityChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Comprehensive dataset for multiple years
+        const livestockData = {
+            2024: {
+                cattle: [45, 38, 42, 35, 40, 37, 43, 39, 41, 36, 44, 40],
+                sheep: [28, 25, 30, 27, 29, 26, 31, 28, 27, 24, 29, 26],
+                pigs: [35, 32, 38, 34, 36, 33, 37, 35, 34, 31, 36, 33]
+            },
+            2023: {
+                cattle: [42, 39, 44, 38, 41, 37, 43, 40, 42, 36, 41, 38],
+                sheep: [26, 23, 28, 25, 27, 24, 29, 26, 25, 22, 27, 24],
+                pigs: [33, 30, 36, 32, 34, 31, 35, 33, 32, 29, 34, 31]
+            },
+            2022: {
+                cattle: [40, 37, 41, 36, 39, 35, 40, 38, 39, 34, 38, 36],
+                sheep: [24, 21, 26, 23, 25, 22, 27, 24, 23, 20, 25, 22],
+                pigs: [31, 28, 34, 30, 32, 29, 33, 31, 30, 27, 32, 29]
+            },
+            2021: {
+                cattle: [38, 35, 39, 34, 37, 33, 38, 36, 37, 32, 36, 34],
+                sheep: [22, 19, 24, 21, 23, 20, 25, 22, 21, 18, 23, 20],
+                pigs: [29, 26, 32, 28, 30, 27, 31, 29, 28, 25, 30, 27]
+            }
+        };
+    
+        // Initialize Chart.js
+        Chart.register(ChartDataLabels);
+        const ctx = document.getElementById('mortalityChart').getContext('2d');
+        let chart;
+    
+        function initializeChart() {
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {},
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: { size: 13 }
+                            }
+                        },
+                        datalabels: {
+                            backgroundColor: function(context) {
+                                return context.dataset.borderColor;
+                            },
+                            borderRadius: 4,
+                            color: 'white',
+                            font: { weight: 'bold' },
+                            padding: 6,
+                            formatter: function(value) {
+                                return value;
+                            },
+                            display: function(context) {
+                                return context.dataIndex === context.dataset.data.length - 1;
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            titleColor: '#2c3e50',
+                            bodyColor: '#2c3e50',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: true,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.parsed.y} deaths`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Deaths',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold'
+                                }
+                            },
+                            grid: {
+                                drawBorder: false
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    
+        function updateChart() {
+            const selectedYear = document.getElementById('yearSelect').value;
+            const viewType = document.getElementById('viewSelect').value;
+            const livestockType = document.getElementById('livestockSelect').value;
+            
+            let chartData;
+            
+            if (viewType === 'monthly') {
+                chartData = {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    datasets: []
+                };
+    
+                if (livestockType === 'all') {
+                    const types = {
+                        cattle: { color: '#e74c3c', bgColor: 'rgba(231, 76, 60, 0.1)' },
+                        sheep: { color: '#3498db', bgColor: 'rgba(52, 152, 219, 0.1)' },
+                        pigs: { color: '#2ecc71', bgColor: 'rgba(46, 204, 113, 0.1)' }
+                    };
+    
+                    Object.entries(types).forEach(([type, colors]) => {
+                        chartData.datasets.push({
+                            label: `${type.charAt(0).toUpperCase() + type.slice(1)} Deaths`,
+                            data: livestockData[selectedYear][type],
+                            borderColor: colors.color,
+                            backgroundColor: colors.bgColor,
+                            tension: 0.4,
+                            fill: true
+                        });
+                    });
+                } else {
+                    const colors = {
+                        cattle: { color: '#e74c3c', bgColor: 'rgba(231, 76, 60, 0.1)' },
+                        sheep: { color: '#3498db', bgColor: 'rgba(52, 152, 219, 0.1)' },
+                        pigs: { color: '#2ecc71', bgColor: 'rgba(46, 204, 113, 0.1)' }
+                    };
+    
+                    chartData.datasets.push({
+                        label: `${livestockType.charAt(0).toUpperCase() + livestockType.slice(1)} Deaths`,
+                        data: livestockData[selectedYear][livestockType],
+                        borderColor: colors[livestockType].color,
+                        backgroundColor: colors[livestockType].bgColor,
+                        tension: 0.4,
+                        fill: true
+                    });
+                }
+    
+                chart.options.scales.y.title.text = 'Monthly Deaths';
+            } else {
+                chartData = {
+                    labels: Object.keys(livestockData),
+                    datasets: []
+                };
+    
+                if (livestockType === 'all') {
+                    const types = {
+                        cattle: '#e74c3c',
+                        sheep: '#3498db',
+                        pigs: '#2ecc71'
+                    };
+    
+                    Object.entries(types).forEach(([type, color]) => {
+                        const yearlyTotals = Object.keys(livestockData).map(year => 
+                            livestockData[year][type].reduce((a, b) => a + b, 0)
+                        );
+                        
+                        chartData.datasets.push({
+                            label: `${type.charAt(0).toUpperCase() + type.slice(1)} Total Deaths`,
+                            data: yearlyTotals,
+                            backgroundColor: color,
+                            type: 'bar'
+                        });
+                    });
+                } else {
+                    const yearlyTotals = Object.keys(livestockData).map(year => 
+                        livestockData[year][livestockType].reduce((a, b) => a + b, 0)
+                    );
+                    
+                    chartData.datasets.push({
+                        label: `${livestockType.charAt(0).toUpperCase() + livestockType.slice(1)} Total Deaths`,
+                        data: yearlyTotals,
+                        backgroundColor: livestockType === 'cattle' ? '#e74c3c' : 
+                                       livestockType === 'sheep' ? '#3498db' : '#2ecc71',
+                        type: 'bar'
+                    });
+                }
+    
+                chart.options.scales.y.title.text = 'Yearly Deaths';
+            }
+    
+            chart.data = chartData;
+            chart.update();
+    
+            // Update subtitle
+            const subtitle = viewType === 'monthly' 
+                ? `Monthly mortality data for ${selectedYear}` 
+                : 'Yearly mortality summary';
+            document.getElementById('chartSubtitle').textContent = subtitle;
+        }
+    
+        // Initialize chart and add event listeners
+        initializeChart();
+        document.getElementById('yearSelect').addEventListener('change', updateChart);
+        document.getElementById('viewSelect').addEventListener('change', updateChart);
+        document.getElementById('livestockSelect').addEventListener('change', updateChart);
+    
+        // Initial update
+        updateChart();
+    </script>
+    </body>
+    </html>

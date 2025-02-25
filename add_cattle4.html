@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Livestock</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            padding: 20px;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 20px auto;
+        
+        }
+
+        .page-title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            position: relative;
+        }
+
+        
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #28a745;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background-color: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
+            outline: none;
+        }
+
+        .record-section {
+            background: #f8f9fa;
+            margin-top: 20px;
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        .record-section h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+        }
+
+        .record-entry {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .record-entry:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .remove-record-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .remove-record-btn:hover {
+            background: #c82333;
+        }
+
+        .add-record-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .add-record-btn:hover {
+            background-color: #218838;
+        }
+
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Success Popup Styles */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .popup-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            border-top: 5px solid #28a745;
+        }
+
+        .popup-content h3 {
+            color: #28a745;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .popup-content p {
+            color: #495057;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .popup-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .popup-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .close-button {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .close-button:hover {
+            background-color: #5a6268;
+        }
+
+        .add-new-button {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .add-new-button:hover {
+            background-color: #218838;
+        }
+
+        /* File upload styling */
+        input[type="file"] {
+            padding: 10px;
+            background-color: #f8f9fa;
+        }
+
+        input[type="file"]::-webkit-file-upload-button {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="file"]::-webkit-file-upload-button:hover {
+            background-color: #218838;
+        }
+
+        /* Helper text */
+        .helper-text {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        /* Required field indicator */
+        .required-field::after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        /* Error state */
+        .error {
+            border-color: #dc3545 !important;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .record-entry {
+                grid-template-columns: 1fr;
+                padding-top: 40px; /* Make room for the delete button */
+            }
+
+            .popup-content {
+                width: 95%;
+                padding: 25px 20px;
+            }
+
+            .popup-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Success Popup -->
+    <div class="popup-overlay" id="successPopup">
+        <div class="popup-content">
+            <i class="fas fa-check-circle" style="font-size: 60px; color: #28a745; margin-bottom: 20px;"></i>
+            <h3>Success!</h3>
+            <p>Livestock has been added successfully to your inventory</p>
+            <div class="popup-buttons">
+                <button class="popup-button close-button" onclick="closePopup()">
+                    <i class="fas fa-times"></i> Close
+                </button>
+                <button class="popup-button add-new-button" onclick="addNewLivestock()">
+                    <i class="fas fa-plus"></i> Add Another
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <h2 class="page-title">Add New Livestock</h2>
+        <form id="livestockForm" action="" method="POST" enctype="multipart/form-data">
+            <!-- Basic Information Section -->
+            <div class="form-section">
+                <h3 class="section-title">
+                   Basic Information
+                </h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="rfid" class="required-field">RFID Tag</label>
+                        <input type="text" id="rfid" name="rfid" placeholder="Enter RFID tag number" required>
+                        <div class="error-message" id="rfid-error">Please enter an RFID tag number</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="breed" class="required-field">Breed</label>
+                        <select id="breed" name="breed" required>
+                            <option value="">Select Breed</option>
+                            <option value="holstein">Holstein</option>
+                            <option value="jersey">Jersey</option>
+                            <option value="angus">Angus</option>
+                            <option value="brahman">Brahman</option>
+                            <option value="charolais">Charolais</option>
+                            <option value="guernsey">Guernsey</option>
+                            <option value="hereford">Hereford</option>
+                            <option value="simmental">Simmental</option>
+                        </select>
+                        <div class="error-message" id="breed-error">Please select a breed</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="dob" class="required-field">Date of Birth</label>
+                        <input type="date" id="dob" name="dob" required>
+                        <div class="helper-text">Enter animal's date of birth or estimate</div>
+                        <div class="error-message" id="dob-error">Please enter date of birth</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sex" class="required-field">Sex</label>
+                        <select id="sex" name="sex" required>
+                            <option value="">Select Sex</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                        <div class="error-message" id="sex-error">Please select sex</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Physical Details Section -->
+            <div class="form-section">
+                <h3 class="section-title">
+                  Physical Details
+                </h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="animal-type" class="required-field">Type of Animal</label>
+                        <select id="animal-type" name="animal-type" required>
+                            <option value="">Select Type</option>
+                            <option value="cow">Cow</option>
+                            <option value="bull">Bull</option>
+                            <option value="heifer">Heifer</option>
+                            <option value="calf">Calf</option>
+                        </select>
+                        <div class="error-message" id="animal-type-error">Please select animal type</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="weight" class="required-field">Weight (kg)</label>
+                        <input type="number" id="weight" name="weight" min="0" step="0.1" placeholder="Enter weight" required>
+                        <div class="error-message" id="weight-error">Please enter a valid weight</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="price" class="required-field">Price (Ksh)</label>
+                        <input type="number" id="price" name="price" min="0" placeholder="Enter purchase price" required>
+                        <div class="error-message" id="price-error">Please enter a valid price</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="images">Upload Images</label>
+                        <input type="file" id="images" name="images[]" accept="image/*" multiple>
+                        <div class="helper-text"> Add photos of the animal</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Records Section -->
+            <div class="form-section">
+                <h3 class="section-title">
+                 Health Records
+                </h3>
+                
+                <!-- Vaccination Records -->
+                <div class="record-section" id="vaccination-records">
+                    <h4><i style="color: #28a745; margin-right: 8px;"></i> Vaccination History</h4>
+                    <div id="vaccination-entries" class="records-grid"></div>
+                    <button type="button" class="add-record-btn" onclick="addVaccinationRecord()">
+                        <i class="fas fa-plus"></i> Add Vaccination Record
+                    </button>
+                </div>
+
+                <!-- Treatment Records -->
+                <div class="record-section" id="treatment-records">
+                    <h4><i style="color: #28a745; margin-right: 8px;"></i> Treatment History</h4>
+                    <div id="treatment-entries" class="records-grid"></div>
+                    <button type="button" class="add-record-btn" onclick="addTreatmentRecord()">
+                        <i class="fas fa-plus"></i> Add Treatment Record
+                    </button>
+                </div>
+
+                <!-- Health Notes -->
+                <div class="form-group">
+                    <label for="health-notes">Additional Health Notes</label>
+                    <textarea id="health-notes" name="health-notes" rows="4" placeholder="Enter any additional health information or observations"></textarea>
+                    <div class="helper-text">Optional: Add any other health-related information</div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                 Save Livestock
+            </button>
+        </form>
+    </div>
+
+    <script>
+        let vaccinationCounter = 0;
+        let treatmentCounter = 0;
+
+        function addVaccinationRecord() {
+            const container = document.getElementById('vaccination-entries');
+            const recordDiv = document.createElement('div');
+            recordDiv.className = 'record-entry';
+            recordDiv.innerHTML = `
+                <div class="form-group">
+                    <label for="vaccine-name-${vaccinationCounter}">Vaccine Name</label>
+                    <input type="text" id="vaccine-name-${vaccinationCounter}" name="vaccine-name[]" placeholder="Enter vaccine name" required>
+                </div>
+                <div class="form-group">
+                    <label for="vaccine-date-${vaccinationCounter}">Date Administered</label>
+                    <input type="date" id="vaccine-date-${vaccinationCounter}" name="vaccine-date[]" required>
+                </div>
+                <div class="form-group">
+                    <label for="batch-number-${vaccinationCounter}">Batch Number</label>
+                    <input type="text" id="batch-number-${vaccinationCounter}" name="batch-number[]" placeholder="Enter batch number" required>
+                </div>
+                <button type="button" class="remove-record-btn" onclick="this.closest('.record-entry').remove()">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(recordDiv);
+            vaccinationCounter++;
+        }
+
+        function addTreatmentRecord() {
+            const container = document.getElementById('treatment-entries');
+            const recordDiv = document.createElement('div');
+            recordDiv.className = 'record-entry';
+            recordDiv.innerHTML = `
+                <div class="form-group">
+                    <label for="illness-${treatmentCounter}">Illness/Condition</label>
+                    <input type="text" id="illness-${treatmentCounter}" name="illness[]" placeholder="Enter illness or condition" required>
+                </div>
+                <div class="form-group">
+                    <label for="treatment-${treatmentCounter}">Treatment</label>
+                    <input type="text" id="treatment-${treatmentCounter}" name="treatment[]" placeholder="Enter treatment given" required>
+                </div>
+                <div class="form-group">
+                    <label for="treatment-date-${treatmentCounter}">Date</label>
+                    <input type="date" id="treatment-date-${treatmentCounter}" name="treatment-date[]" required>
+                </div>
+                <button type="button" class="remove-record-btn" onclick="this.closest('.record-entry').remove()">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(recordDiv);
+            treatmentCounter++;
+        }
+
+        // Form validation and submission handling
+        document.getElementById('livestockForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(msg => {
+                msg.style.display = 'none';
+            });
+            
+            // Basic validation
+            let valid = true;
+            const required = this.querySelectorAll('[required]');
+            required.forEach(field => {
+                if (!field.value) {
+                    field.classList.add('error');
+                    const errorId = field.id + '-error';
+                    const errorMsg = document.getElementById(errorId);
+                    if (errorMsg) {
+                        errorMsg.style.display = 'block';
+                    }
+                    valid = false;
+                } else {
+                    field.classList.remove('error');
+                }
+            });
+            
+            if (!valid) {
+                // Scroll to first error
+                const firstError = document.querySelector('.error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+            
+            // Here you would typically handle the form submission to your backend with fetch or XMLHttpRequest
+            // For demonstration, we'll just show the success popup
+            document.getElementById('successPopup').style.display = 'block';
+        });
+
+        function closePopup() {
+            document.getElementById('successPopup').style.display = 'none';
+            window.location.href = 'index.html'; // Redirect to main page
+        }
+
+        function addNewLivestock() {
+            document.getElementById('successPopup').style.display = 'none';
+            document.getElementById('livestockForm').reset();
+            document.getElementById('vaccination-entries').innerHTML = '';
+            document.getElementById('treatment-entries').innerHTML = '';
+            // Add initial records again
+            addVaccinationRecord();
+            addTreatmentRecord();
+            // Scroll to top
+            window.scrollTo(0, 0);
+            // Remove error states
+            document.querySelectorAll('.error').forEach(field => {
+                field.classList.remove('error');
+            });
+            document.querySelectorAll('.error-message').forEach(msg => {
+                msg.style.display = 'none';
+            });
+        }
+
+        // Enhance field validation on input
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.hasAttribute('required') && this.value) {
+                    this.classList.remove('error');
+                    const errorId = this.id + '-error';
+                    const errorMsg = document.getElementById(errorId);
+                    if (errorMsg) {
+                        errorMsg.style.display = 'none';
+                    }
+                }
+            });
+        });
+
+        // Add initial records
+        addVaccinationRecord();
+        addTreatmentRecord();
+    </script>
+</body>
+</html>

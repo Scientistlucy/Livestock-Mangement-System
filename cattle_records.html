@@ -1,10 +1,4 @@
-<?php
-// Include database connection
-include('includes/connect.php');
 
-// Start session if needed
-session_start();
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -344,7 +338,7 @@ body {
         </div>
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="index.php">
+                <a href="index.html">
                     <i class="fas fa-dashboard"></i>
                     Dashboard
                 </a>
@@ -458,142 +452,131 @@ body {
         </div>
 
         <div class="Livestock-record">
-            <?php
-            // Updated query to use cattle_id
-            $query = "
-                SELECT 
-                    c.cattle_id,
-                    c.rfid_tag,
-                    c.images,
-                    c.breed,
-                    c.sex,
-                    c.animal_type,
-                    c.weight,
-                    c.price,
-                    c.other_health_notes
-                FROM 
-                    cattle c
-                WHERE 
-                    c.farmer_id = ?
-                ORDER BY 
-                    c.rfid_tag ASC";
-
-            try {
-                $stmt = $con->prepare($query);
-                $stmt->bind_param("i", $_SESSION['farmer_id']);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                echo '<table id="LivestockTable">
-                        <thead>
-                            <tr>
-                                <th>RFID Tag</th>
-                                <th>Image</th>
-                                <th>Breed</th>
-                                <th>Gender</th>
-                                <th>Type</th>
-                                <th>Weight (kg)</th>
-                                <th>Price (Ksh)</th>
-                                <th>Vaccination Records</th>
-                                <th>Treatment Records</th>
-                                <th>Other Health Notes</th>
-                            </tr>
-                        </thead>
-                        <tbody>';
-
-                while ($cattle = $result->fetch_assoc()) {
-                    // Fetch vaccination records using cattle_id
-                    $vac_query = "SELECT vaccine_name, date_administered, batch_number 
-                                FROM vaccination_records 
-                                WHERE cattle_id = ?
-                                ORDER BY date_administered DESC";
-                    $vac_stmt = $con->prepare($vac_query);
-                    $vac_stmt->bind_param("i", $cattle['cattle_id']);
-                    $vac_stmt->execute();
-                    $vac_result = $vac_stmt->get_result();
-
-                    // Fetch treatment records using cattle_id
-                    $treat_query = "SELECT illness, treatment, treatment_date, medication 
-                                  FROM treatment_records 
-                                  WHERE cattle_id = ?
-                                  ORDER BY treatment_date DESC";
-                    $treat_stmt = $con->prepare($treat_query);
-                    $treat_stmt->bind_param("i", $cattle['cattle_id']);
-                    $treat_stmt->execute();
-                    $treat_result = $treat_stmt->get_result();
-
-                    echo '<tr>';
-                    echo '<td>' . htmlspecialchars($cattle['rfid_tag']) . '</td>';
-                    
-                    // Handle multiple images
-                    $images = explode(',', $cattle['images']);
-                    echo '<td>';
-                    foreach ($images as $image) {
-                        if (!empty($image)) {
-                            echo '<img src="' . htmlspecialchars($image) . '" alt="Cattle Image">';
-                        }
-                    }
-                    echo '</td>';
-                    
-                    echo '<td>' . htmlspecialchars($cattle['breed']) . '</td>';
-                    echo '<td>' . htmlspecialchars($cattle['sex']) . '</td>';
-                    echo '<td>' . htmlspecialchars($cattle['animal_type']) . '</td>';
-                    echo '<td>' . htmlspecialchars($cattle['weight']) . '</td>';
-                    echo '<td>' . number_format($cattle['price']) . '</td>';
-                    
-                    // Display vaccination records
-                    echo '<td><ul>';
-                    if ($vac_result->num_rows > 0) {
-                        while ($vac = $vac_result->fetch_assoc()) {
-                            echo '<li>Vaccine: ' . htmlspecialchars($vac['vaccine_name']) . '</li>';
-                            echo '<li>Date: ' . htmlspecialchars($vac['date_administered']) . '</li>';
-                            echo '<li>Batch: ' . htmlspecialchars($vac['batch_number']) . '</li>';
-                            echo '<li class="record-separator"></li>';
-                        }
-                    } else {
-                        echo '<li>No vaccination records found</li>';
-                    }
-                    echo '</ul></td>';
-                    
-                    // Display treatment records
-                    echo '<td><ul>';
-                    if ($treat_result->num_rows > 0) {
-                        while ($treat = $treat_result->fetch_assoc()) {
-                            echo '<li>Illness: ' . htmlspecialchars($treat['illness']) . '</li>';
-                            echo '<li>Treatment: ' . htmlspecialchars($treat['treatment']) . '</li>';
-                            echo '<li>Date: ' . htmlspecialchars($treat['treatment_date']) . '</li>';
-                            echo '<li>Medication: ' . htmlspecialchars($treat['medication']) . '</li>';
-                            echo '<li class="record-separator"></li>';
-                        }
-                    } else {
-                        echo '<li>No treatment records found</li>';
-                    }
-                    echo '</ul></td>';
-                    
-                    echo '<td>' . htmlspecialchars($cattle['other_health_notes']) . '</td>';
-                    echo '</tr>';
-
-                    $vac_stmt->close();
-                    $treat_stmt->close();
-                }
-
-                echo '</tbody></table>';
-                
-                $stmt->close();
-
-            } catch (Exception $e) {
-                echo "Error: " . $e->getMessage();
-            }
-
-            $con->close();
-            ?>
-
+            <table id="LivestockTable">
+                <thead>
+                    <tr>
+                        <th>RFID Tag</th>
+                        <th>Image</th>
+                        <th>Breed</th>
+                        <th>Gender</th>
+                        <th>Type</th>
+                        <th>Weight (kg)</th>
+                        <th>Price (Ksh)</th>
+                        <th>Vaccination Records</th>
+                        <th>Treatment Records</th>
+                        <th>Other Health Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>RFID-001</td>
+                        <td><img src="image1.jpg" alt="Cattle Image"></td>
+                        <td>Angus</td>
+                        <td>Male</td>
+                        <td>Cow</td>
+                        <td>500</td>
+                        <td>50,000</td>
+                        <td>
+                            <ul>
+                                <li>Vaccine: BVDV</li>
+                                <li>Date: 2022-01-01</li>
+                                <li>Batch: 12345</li>
+                                <li class="record-separator"></li>
+                                <li>Vaccine: IBR</li>
+                                <li>Date: 2022-06-01</li>
+                                <li>Batch: 67890</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Illness: Respiratory Infection</li>
+                                <li>Treatment: Antibiotics</li>
+                                <li>Date: 2022-03-01</li>
+                                <li>Medication: Amoxicillin</li>
+                                <li class="record-separator"></li>
+                                <li>Illness: Skin Infection</li>
+                                <li>Treatment: Topical Cream</li>
+                                <li>Date: 2022-09-01</li>
+                                <li>Medication: Neosporin</li>
+                            </ul>
+                        </td>
+                        <td>Healthy, no issues</td>
+                    </tr>
+                    <tr>
+                        <td>RFID-002</td>
+                        <td><img src="image2.jpg" alt="Cattle Image"></td>
+                        <td>Simmental</td>
+                        <td>Female</td>
+                        <td>Cow</td>
+                        <td>450</td>
+                        <td>45,000</td>
+                        <td>
+                            <ul>
+                                <li>Vaccine: BVDV</li>
+                                <li>Date: 2022-02-01</li>
+                                <li>Batch: 11111</li>
+                                <li class="record-separator"></li>
+                                <li>Vaccine: IBR</li>
+                                <li>Date: 2022-07-01</li>
+                                <li>Batch: 22222</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Illness: Digestive Issues</li>
+                                <li>Treatment: Probiotics</li>
+                                <li>Date: 2022-04-01</li>
+                                <li>Medication: Yogurt</li>
+                                <li class="record-separator"></li>
+                                <li>Illness: Skin Irritation</li>
+                                <li>Treatment: Topical Cream</li>
+                                <li>Date: 2022-10-01</li>
+                                <li>Medication: Hydrocortisone</li>
+                            </ul>
+                        </td>
+                        <td>Healthy, no issues</td>
+                    </tr>
+                    <tr>
+                        <td>RFID-003</td>
+                        <td><img src="image3.jpg" alt="Cattle Image"></td>
+                        <td>Charolais</td>
+                        <td>Male</td>
+                        <td>Bull</td>
+                        <td>600</td>
+                        <td>60,000</td>
+                        <td>
+                            <ul>
+                                <li>Vaccine: BVDV</li>
+                                <li>Date: 2022-03-01</li>
+                                <li>Batch: 33333</li>
+                                <li class="record-separator"></li>
+                                <li>Vaccine: IBR</li>
+                                <li>Date: 2022-08-01</li>
+                                <li>Batch: 44444</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>Illness: Respiratory Infection</li>
+                                <li>Treatment: Antibiotics</li>
+                                <li>Date: 2022-05-01</li>
+                                <li>Medication: Amoxicillin</li>
+                                <li class="record-separator"></li>
+                                <li>Illness: Skin Infection</li>
+                                <li>Treatment: Topical Cream</li>
+                                <li>Date: 2022-11-01</li>
+                                <li>Medication: Neosporin</li>
+                            </ul>
+                        </td>
+                        <td>Healthy, no issues</td>
+                    </tr>
+                </tbody>
+            </table>
+        
             <div class="general-notes">
                 <h3>General Livestock Notes</h3>
                 <p>All Livestock are regularly checked by veterinarians. Special care is taken to monitor the health of the injured Livestock, and their recovery process is closely monitored.</p>
             </div>
-
-           
         </div>
     </div>
 
