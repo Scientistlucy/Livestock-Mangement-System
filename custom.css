@@ -1,0 +1,50 @@
+  /* Custom column width between col-md-4 and col-xl-3 */
+  .col-xl-2-4 {
+    width: 20%;
+  }
+  
+  /* For hover effect like the original */
+  .card {
+    transition: transform 0.2s ease-in-out;
+    border-radius: 1rem;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Ensure consistent height for icon */
+  .card-body i {
+    font-size: 2.5rem;
+    margin-left: 1rem;
+  }
+  
+  /* Custom colors to match original */
+  .text-primary {
+    color: #2196f3 !important; /* Blue for livestock */
+  }
+  
+  .text-success {
+    color: #4caf50 !important; /* Green for healthy/ready */
+  }
+  
+  .text-warning {
+    color: #ff9800 !important; /* Orange for treatment */
+  }
+  
+  .text-danger {
+    color: #f44336 !important; /* Red for attention */
+  }
+  
+  /* Media query for responsive design */
+  @media (max-width: 1199px) {
+    .col-xl-2-4 {
+      width: 50%;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .col-xl-2-4 {
+      width: 100%;
+    }
+  }

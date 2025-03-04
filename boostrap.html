@@ -1,0 +1,130 @@
+<!-- Bootstrap Statistics Cards -->
+<div class="container-fluid">
+    <div class="row g-4">
+      <!-- Total Livestock Card -->
+      <div class="col-md-4 col-xl-2-4">
+        <div class="card bg-white shadow-sm h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="stat-info">
+              <h6 class="text-muted mb-1">Total Livestock</h6>
+              <h3 class="mb-0 fw-bold">156</h3>
+            </div>
+            <i class="fas fa-cow fs-1 text-primary opacity-80"></i>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Under Treatment Card -->
+      <div class="col-md-4 col-xl-2-4">
+        <div class="card bg-white shadow-sm h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="stat-info">
+              <h6 class="text-muted mb-1">Under Treatment</h6>
+              <h3 class="mb-0 fw-bold">8</h3>
+            </div>
+            <i class="fas fa-stethoscope fs-1 text-warning opacity-80"></i>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Needs Attention Card -->
+      <div class="col-md-4 col-xl-2-4">
+        <div class="card bg-white shadow-sm h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="stat-info">
+              <h6 class="text-muted mb-1">Needs Attention</h6>
+              <h3 class="mb-0 fw-bold">6</h3>
+            </div>
+            <i class="fas fa-exclamation-circle fs-1 text-danger opacity-80"></i>
+          </div>
+        </div>
+      </div>
+      
+      <!-- New Livestock Card -->
+      <div class="col-md-4 col-xl-2-4">
+        <div class="card bg-white shadow-sm h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="stat-info">
+              <h6 class="text-muted mb-1">New Livestock Purchased</h6>
+              <h3 class="mb-0 fw-bold" id="pregnantAnimalsCount">6</h3>
+            </div>
+            <i class="fas fa-cow fs-1 text-primary opacity-80"></i>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Ready for Sale Card -->
+      <div class="col-md-4 col-xl-2-4">
+        <div class="card bg-white shadow-sm h-100">
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div class="stat-info">
+              <h6 class="text-muted mb-1">Ready for Sale</h6>
+              <h3 class="mb-0 fw-bold" id="readyForSale">0</h3>
+              <p class="text-muted small mb-0">Market Weight Achieved</p>
+            </div>
+            <i class="fas fa-check-circle fs-1 text-success opacity-80"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add Bootstrap CSS and JS CDN links -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  
+  <!-- Custom CSS to better match the original design -->
+  <style>
+    /* Custom column width between col-md-4 and col-xl-3 */
+    .col-xl-2-4 {
+      width: 20%;
+    }
+    
+    /* For hover effect like the original */
+    .card {
+      transition: transform 0.2s ease-in-out;
+      border-radius: 1rem;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    
+    /* Ensure consistent height for icon */
+    .card-body i {
+      font-size: 2.5rem;
+      margin-left: 1rem;
+    }
+    
+    /* Custom colors to match original */
+    .text-primary {
+      color: #2196f3 !important; /* Blue for livestock */
+    }
+    
+    .text-success {
+      color: #4caf50 !important; /* Green for healthy/ready */
+    }
+    
+    .text-warning {
+      color: #ff9800 !important; /* Orange for treatment */
+    }
+    
+    .text-danger {
+      color: #f44336 !important; /* Red for attention */
+    }
+    
+    /* Media query for responsive design */
+    @media (max-width: 1199px) {
+      .col-xl-2-4 {
+        width: 50%;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      .col-xl-2-4 {
+        width: 100%;
+      }
+    }
+  </style>

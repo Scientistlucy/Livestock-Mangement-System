@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Livestock Search</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     * {
@@ -14,8 +15,8 @@
 }
 
 body {
-    background: #f5f5f5;
-    padding: 20px;
+    display: flex;
+    background: #f0f2f5;
     min-height: 100vh;
     color: #333;
 }
@@ -37,7 +38,7 @@ body {
 .page-title {
     text-align: center;
     color: #2c3e50;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     font-size: 2.2em;
     position: relative;
 }
@@ -57,6 +58,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     overflow: hidden;
+    margin-left: 20px;
 }
 
 .card-header {
@@ -84,7 +86,8 @@ body {
 }
 
 .card-body {
-    padding: 20px;
+    padding: 10px;
+    margin-left: 20px;
 }
 
 .section-title {
@@ -104,11 +107,12 @@ body {
 .form-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+    gap: 10px;
 }
 
 .form-group {
     margin-bottom: 15px;
+    gap:10px;
 }
 
 .form-group label {
@@ -210,6 +214,76 @@ body {
 .edit-btn:hover {
     background: #e0a800;
 }
+/* Updated search filter container to match form styling */
+.search-filter-container {
+    width: 100%;
+    display: flex;
+    gap: 15px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.search-box {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+}
+
+.filter-group {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.filter-select {
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background-color: white;
+    min-width: 150px;
+    transition: all 0.3s ease;
+}
+
+.filter-select:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
+    outline: none;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+    flex-wrap: wrap;
+}
 
 .table-container {
     margin-top: 30px;
@@ -223,7 +297,7 @@ table {
     background: white;
     border-radius: 8px;
     overflow: hidden;
-    min-width: 1200px;
+    min-width: 1500px;
 }
 
 th, td {
@@ -275,78 +349,6 @@ table img {
     border-radius: 4px;
 }
 
-/* Search filter container */
-.search-filter-container {
-    width: 100%;
-    display: flex;
-    gap: 15px;
-    margin: 15px 0;
-    flex-wrap: wrap;
-    background: #f8f9fa;
-    padding: 25px;
-    border-radius: 8px;
-    border: 1px solid #dee2e6;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.search-box {
-    flex: 1;
-    min-width: 200px;
-    position: relative;
-}
-
-.search-input {
-    width: 100%;
-    padding: 12px 15px 12px 40px;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
-
-.search-input:focus {
-    border-color: #28a745;
-    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
-    outline: none;
-}
-
-.search-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6c757d;
-}
-
-.filter-group {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.filter-select {
-    padding: 12px 15px;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
-    background-color: white;
-    min-width: 150px;
-    transition: all 0.3s ease;
-}
-
-.filter-select:focus {
-    border-color: #28a745;
-    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
-    outline: none;
-}
-
-.button-group {
-    display: flex;
-    gap: 10px;
-    margin-left: auto;
-    flex-wrap: wrap;
-}
-
-/* Status badges for different states */
 .status-badge {
     padding: 6px 12px;
     border-radius: 20px;
@@ -399,7 +401,7 @@ table img {
     gap: 5px;
 }
 
-/* Modal styles */
+/* Modal Styles - Updated to match form container style */
 .modal {
     display: none;
     position: fixed;
@@ -465,7 +467,6 @@ table img {
     color: #343a40;
 }
 
-/* Pagination */
 .pagination {
     display: flex;
     justify-content: center;
@@ -492,12 +493,30 @@ table img {
     background: #f8f9fa;
 }
 
-/* Stats grid styling */
+.report-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.option-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Stats grid styling - enhanced from first code */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
     padding: 1rem;
+    margin-left: 20px;
 }
 
 .stat-card {
@@ -556,24 +575,6 @@ table img {
     margin-top: 0.25rem;
 }
 
-/* Report options */
-.report-options {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    background: #f8f9fa;
-    padding: 25px;
-    border-radius: 8px;
-    border: 1px solid #dee2e6;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.option-group {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
 /* Animations */
 @keyframes slideIn {
     from {
@@ -598,6 +599,185 @@ table img {
     }
 }
 
+/* Sidebar styling from first code */
+.sidebar {
+    width: 280px;
+    background: #1b5e20;
+    min-height: 100vh;
+    color: white;
+    padding: 20px 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+.sidebar.collapsed {
+    width: 70px;
+}
+
+.sidebar-header {
+    padding: 0 20px 15px;
+    border-bottom: 1px solid #2e7d32;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.2rem;
+}
+
+.sidebar-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.search-container {
+    position: relative;
+    margin: 10px 20px;
+    transition: opacity 0.3s ease;
+}
+
+.collapsed .search-container {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 10px 35px 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #2e7d32;
+    background: rgba(255, 255, 255, 0.9);
+    outline: none;
+    font-size: 0.95rem;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.search-bar:focus {
+    border-color: #4caf50;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+.search-icon {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-size: 18px;
+    color: #2e7d32;
+    cursor: pointer;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.nav-item {
+    margin: 4px 0;
+    position: relative;
+}
+
+.nav-item a {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.nav-item i {
+    width: 24px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.collapsed .nav-item span,
+.collapsed .submenu {
+    display: none;
+}
+
+.submenu {
+    list-style: none;
+    padding-left: 34px;
+    background: rgba(0, 0, 0, 0.1);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.submenu.active {
+    max-height: 500px;
+}
+
+.submenu a {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.nav-item:hover > a {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-item.has-submenu > a:after {
+    content: '\f105';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    margin-left: auto;
+    transition: transform 0.3s ease;
+}
+
+.nav-item.has-submenu.active > a:after {
+    transform: rotate(90deg);
+}
+
+.collapsed .nav-item a:hover:before {
+    content: attr(data-title);
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #2e7d32;
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 1000;
+    margin-left: 10px;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     body {
@@ -617,6 +797,10 @@ table img {
         flex-direction: column;
     }
     
+    .vaccination-grid {
+        grid-template-columns: 1fr;
+    }
+
     .card-header {
         flex-direction: column;
         align-items: flex-start;
@@ -644,6 +828,11 @@ table img {
         padding: 15px;
     }
     
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
     .stats-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
@@ -656,15 +845,370 @@ table img {
     .stat-number {
         font-size: 1.75rem;
     }
-
-    h1 {
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
-    }
 }
+
+/* Adding color variations for stat cards */
+.bg-blue {
+    background-color: #1976d2;
+}
+
+.bg-green {
+    background-color: #2e7d32;
+}
+
+.bg-purple {
+    background-color: #7b1fa2;
+}
+
+.bg-orange {
+    background-color: #e65100;
+}
+
+.bg-red {
+    background-color: #c62828;
+}
+
+.bg-teal {
+    background-color: #00796b;
+}
+
+/* Content wrapper to work with sidebar */
+.content-wrapper {
+    flex: 1;
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+    overflow: hidden;
+}
+
+.content-wrapper.sidebar-collapsed {
+    margin-left: 70px;
+}
+
+h1.main-title {
+    text-align: center;
+    color: #1e293b;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+
+
+/*styling the sidebar*/
+* {
+          
+          box-sizing: border-box;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+  
+      .sidebar {
+          width: 280px;
+          background: #1b5e20;
+          min-height: 100vh;
+          color: white;
+          padding: 20px 0;
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          transition: width 0.3s ease;
+          position: relative;
+      }
+
+      .sidebar.collapsed {
+          width: 70px;
+      }
+
+      .sidebar-header {
+          padding: 0 20px 15px;
+          border-bottom: 1px solid #2e7d32;
+          margin-bottom: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+      }
+
+      .toggle-btn {
+          background: none;
+          border: none;
+          color: white;
+          cursor: pointer;
+          padding: 5px;
+          font-size: 1.2rem;
+      }
+
+      .sidebar-header h2 {
+          font-size: 1.5rem;
+          font-weight: 600;
+          margin-bottom: 15px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
+
+      .search-container {
+          position: relative;
+          margin: 10px 20px;
+          transition: opacity 0.3s ease;
+      }
+
+      .collapsed .search-container {
+          opacity: 0;
+          pointer-events: none;
+      }
+
+      .search-bar {
+          width: 100%;
+          padding: 10px 35px 10px 15px;
+          border-radius: 20px;
+          border: 1px solid #2e7d32;
+          background: rgba(255, 255, 255, 0.9);
+          outline: none;
+          font-size: 0.95rem;
+          color: #333;
+          transition: all 0.3s ease;
+      }
+      
+      .search-bar:focus {
+          border-color: #4caf50;
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+      }
+
+      .search-icon {
+          position: absolute;
+          top: 12px;
+          right: 15px;
+          font-size: 18px;
+          color: #2e7d32;
+          cursor: pointer;
+      }
+
+      .nav-menu {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          flex-grow: 1;
+      }
+
+      .nav-item {
+          margin: 4px 0;
+          position: relative;
+      }
+
+      .nav-item a {
+          display: flex;
+          align-items: center;
+          padding: 12px 20px;
+          color: white;
+          text-decoration: none;
+          transition: all 0.3s ease;
+          font-size: 1rem;
+          white-space: nowrap;
+      }
+
+      .nav-item i {
+          width: 24px;
+          margin-right: 10px;
+          text-align: center;
+      }
+
+      .collapsed .nav-item span,
+      .collapsed .submenu {
+          display: none;
+      }
+
+      .submenu {
+          list-style: none;
+          padding-left: 34px;
+          background: rgba(0, 0, 0, 0.1);
+          max-height: 0;
+          overflow: hidden;
+          transition: max-height 0.3s ease;
+      }
+
+      .submenu.active {
+          max-height: 500px;
+      }
+
+      .submenu a {
+          padding: 8px 20px;
+          font-size: 0.9rem;
+          opacity: 0.9;
+      }
+
+      .nav-item:hover > a {
+          background: rgba(255, 255, 255, 0.1);
+      }
+
+      .nav-item.has-submenu > a:after {
+          content: '\f105';
+          font-family: 'Font Awesome 5 Free';
+          font-weight: 900;
+          margin-left: auto;
+          transition: transform 0.3s ease;
+      }
+
+      .nav-item.has-submenu.active > a:after {
+          transform: rotate(90deg);
+      }
+
+      .collapsed .nav-item a:hover:before {
+          content: attr(data-title);
+          position: absolute;
+          left: 100%;
+          top: 50%;
+          transform: translateY(-50%);
+          background: #2e7d32;
+          padding: 5px 10px;
+          border-radius: 4px;
+          white-space: nowrap;
+          z-index: 1000;
+          margin-left: 10px;
+      }
+
+      .sidebar::-webkit-scrollbar {
+          width: 6px;
+      }
+
+      .sidebar::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.1);
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 3px;
+      }
   </style>
 </head>
 <body>
+
+       <!-- Added Search Bar -->
+       <div class="search-container">
+        <input type="search" class="search-bar" placeholder="Search menu...">
+        <i class="fas fa-search search-icon"></i>
+    </div>
+    <ul class="nav-menu">
+        <li class="nav-item">
+            <a href="index.html">
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard Overview
+            </a>
+        </li>
+
+        <li class="nav-item has-submenu">
+            <a href="#">
+                <i class="fas fa-cow"></i>
+                Livestock Inventory
+            </a>
+            <ul class="submenu">
+                <li><a href="animals.html">Animals</a></li>
+                <li><a href="breeds.html">Breeds</a></li>
+                <li><a href="groups.html">Groups/Pens</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item has-submenu">
+            <a href="#">
+                <i class="fas fa-heartbeat"></i>
+                Vaccine  Management
+            </a>
+            <ul class="submenu">
+                <li><a href="health-records.html">Health Records</a></li>
+                <li><a href="schedule_vaccination.html">Vaccinations Schedule</a></li>
+                <li><a href="vet-contacts.html">Veterinary Contacts</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item has-submenu">
+            <a href="#">
+                <i class="fas fa-baby"></i>
+                Breeding & Reproduction
+            </a>
+            <ul class="submenu">
+                <li><a href="breeding-schedule.html">Breeding Schedule</a></li>
+                <li><a href="pregnancy_records.html">Pregnancy Tracking</a></li>
+                <li><a href="birth-records.html">Birth Records</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item has-submenu">
+            <a href="#">
+                <i class="fas fa-drumstick-bite"></i>
+                Health Mnagement 
+            </a>
+            <ul class="submenu">
+                <li><a href="feed-inventory.html">Feed Inventory</a></li>
+                <li><a href="feeding-schedule.html">Feeding Schedule</a></li>
+                <li><a href="nutrition-plans.html">Nutrition Plans</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item has-submenu">
+            <a href="#">
+                <i class="fas fa-chart-line"></i>
+                Production & Performance
+            </a>
+            <ul class="submenu">
+                <li><a href="weight-tracking.html">Weight Tracking</a></li>
+              
+            </ul>
+        </li>
+
+        <li class="nav-item has-submenu">
+            <a href="#">
+                <i class="fas fa-dollar-sign"></i>
+                Sales Management
+            </a>
+            <ul class="submenu">
+                <li><a href="buyers.html">Buyers</a></li> 
+            <li><a href="sellers.html">Sellers</a></li> 
+                <li><a href="sales.html">Livestock Sale List</a></li>
+                <li><a href="profit-analysis.html">Profit Analysis</a></li>
+            </ul>
+        </li>
+
+        
+
+        <li class="nav-item has-submenu">
+            <a href="#">
+                <i class="fas fa-chart-bar"></i>
+                Reports & Analytics
+            </a>
+            <ul class="submenu">
+                <li><a href="health-reports.html">Health Reports</a></li>
+                <li><a href="production-reports.html">Production Reports</a></li>
+                <li><a href="financial-reports.html">Financial Reports</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item has-submenu">
+            <a href="#">
+                <i class="fas fa-cog"></i>
+                Settings & Configuration
+            </a>
+            <ul class="submenu">
+                <li><a href="user-management.html">User Management</a></li>
+                <li><a href="farm-details.html">Farm Details</a></li>
+                <li><a href="system-preferences.html">System Preferences</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item has-submenu">
+            <a href="#">
+                <i class="fas fa-question-circle"></i>
+                Help & Support
+            </a>
+            <ul class="submenu">
+                <li><a href="user-guides.html">User Guides</a></li>
+                <li><a href="contact-support.html">Contact Support</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+ <!-- Main content -->
+ <div class="main-content">
     <div class="form-container">
         <h2 class="page-title">Livestock Inventory</h2>
         
@@ -852,6 +1396,7 @@ table img {
                 </table>
             </div>
         </div>
+    </div>
     </div>
     <script>
         // Global variables

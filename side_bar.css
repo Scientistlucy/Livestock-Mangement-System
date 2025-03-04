@@ -1,9 +1,10 @@
-/* sidebar.css */
+/* Sidebar Structure */
 .sidebar {
     width: 280px;
     background: #1b5e20;
     min-height: 100vh;
-    color: white;  
+    color: white;
+    padding: 20px 0;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -15,6 +16,7 @@
     width: 70px;
 }
 
+/* Sidebar Header */
 .sidebar-header {
     padding: 0 20px 15px;
     border-bottom: 1px solid #2e7d32;
@@ -22,15 +24,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-.toggle-btn {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    padding: 5px;
-    font-size: 1.2rem;
 }
 
 .sidebar-header h2 {
@@ -42,6 +35,17 @@
     text-overflow: ellipsis;
 }
 
+/* Toggle Button */
+.toggle-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 1.2rem;
+}
+
+/* Search Container */
 .search-container {
     position: relative;
     margin: 10px 20px;
@@ -80,6 +84,7 @@
     cursor: pointer;
 }
 
+/* Navigation Menu */
 .nav-menu {
     list-style: none;
     padding: 0;
@@ -109,6 +114,7 @@
     text-align: center;
 }
 
+/* Submenu Styles */
 .collapsed .nav-item span,
 .collapsed .submenu {
     display: none;
@@ -133,12 +139,13 @@
     opacity: 0.9;
 }
 
+/* Hover Effects */
 .nav-item:hover > a {
     background: rgba(255, 255, 255, 0.1);
 }
 
 .nav-item.has-submenu > a:after {
-    content: '\f105';
+    content: '\\f105';
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     margin-left: auto;
@@ -149,6 +156,7 @@
     transform: rotate(90deg);
 }
 
+/* Collapsed State Hover */
 .collapsed .nav-item a:hover:before {
     content: attr(data-title);
     position: absolute;
@@ -163,6 +171,7 @@
     margin-left: 10px;
 }
 
+/* Scrollbar Styling */
 .sidebar::-webkit-scrollbar {
     width: 6px;
 }
@@ -174,26 +183,4 @@
 .sidebar::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 3px;
-}
-
-/* Layout styles */
-body {
-    display: flex;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.main-content {
-    flex: 1;
-    padding: 20px;
-    overflow-x: hidden;
-}
-
-/* Active link styles */
-.nav-item a.active,
-.submenu a.active {
-    background: rgba(255, 255, 255, 0.2);
-    font-weight: bold;
 }

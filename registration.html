@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,18 +31,6 @@
             max-width: 600px;
         }
 
-        .forms-container {
-            position: relative;
-        }
-
-        .form-section {
-            transition: all 0.3s ease;
-        }
-
-        .form-section.hidden {
-            display: none;
-        }
-
         h1 {
             color: #2f855a;
             margin-bottom: 30px;
@@ -66,17 +53,6 @@
             pointer-events: none;
         }
 
-        .input-group label + .input-icon {
-            top: calc(50% + 12px);
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #2d3748;
-            font-weight: 500;
-        }
-
         input, select {
             width: 100%;
             padding: 12px 12px 12px 35px;
@@ -90,38 +66,6 @@
             border-color: #48bb78;
             outline: none;
             box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.2);
-        }
-
-        input:hover, select:hover {
-            border-color: #48bb78;
-        }
-
-        .password-requirements {
-            font-size: 12px;
-            color: #718096;
-            margin-top: 5px;
-        }
-
-        .terms-container {
-            margin: 20px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .terms-container input[type="checkbox"] {
-            width: auto;
-            padding: 0;
-        }
-
-        .terms-container label {
-            margin: 0;
-            cursor: pointer;
-        }
-
-        .terms-container a {
-            color: #38a169;
-            text-decoration: none;
         }
 
         button {
@@ -140,67 +84,31 @@
             margin-bottom: 15px;
         }
 
-        button:hover {
-            background: #38a169;
-        }
-
-        .switch-form {
-            text-align: center;
-            margin-top: 20px;
-            color: #4a5568;
-        }
-
-        .switch-form a {
-            color: #2f855a;
-            text-decoration: none;
-            font-weight: 500;
-            margin-left: 5px;
-        }
-
-        .switch-form a:hover {
-            text-decoration: underline;
-        }
-
         .required {
             color: #e53e3e;
             margin-left: 3px;
         }
 
-        .forgot-password {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-
-        .forgot-password a {
+        .loading-message, .success-message {
+            display: none;
+            text-align: center;
             color: #2f855a;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .forgot-password a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 20px;
-            }
+            margin-top: 20px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="forms-container">
-            <!-- Registration Form -->
             <div class="form-section" id="registerForm">
                 <h1>Farmer Registration</h1>
-                <form method="POST" action="registration.html">
-                    
+                <form id="registrationForm">
                     <div class="input-group">
-                    <label>Full Name<span class="required">*</span></label>
-                    <i class="fas fa-user input-icon"></i>
-                    <input type="text" name="full_name" placeholder="Enter your full name" required>
-                </div>
+                        <label>Full Name<span class="required">*</span></label>
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" name="full_name" placeholder="Enter your full name" required>
+                    </div>
                     <div class="input-group">
                         <label>Phone Number<span class="required">*</span></label>
                         <i class="fas fa-phone input-icon"></i>
@@ -217,9 +125,6 @@
                         <label>Password<span class="required">*</span></label>
                         <i class="fas fa-lock input-icon"></i>
                         <input type="password" name="password" placeholder="Create a strong password" required>
-                        <div class="password-requirements">
-                            Password must be at least 8 characters long and include uppercase, lowercase, numbers, and special characters
-                        </div>
                     </div>
 
                     <div class="input-group">
@@ -227,14 +132,41 @@
                         <i class="fas fa-lock input-icon"></i>
                         <input type="password" name="confirm_password" placeholder="Confirm your password" required>
                     </div>
-                    <button type="submit" name="register">Create Account</button>
-                    
-                    <div class="switch-form">
-                        Already have an account? <a href="login.html">Login here</a>
-                    </div>
+
+                    <button type="submit">Create Account</button>
                 </form>
+
+                <div class="loading-message" id="loadingMessage">
+                    Loading... Please wait.
+                </div>
+                <div class="success-message" id="successMessage">
+                    Successfully registered! Redirecting to login page...
+                </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Show loading message
+            document.getElementById('loadingMessage').style.display = 'block';
+
+            // Simulate a delay (e.g., waiting for server response)
+            setTimeout(function() {
+                // Hide loading message
+                document.getElementById('loadingMessage').style.display = 'none';
+
+                // Show success message
+                document.getElementById('successMessage').style.display = 'block';
+
+                // Redirect to login page after 2 seconds
+                setTimeout(function() {
+                    window.location.href = 'login.html';
+                }, 2000);
+            }, 1500); // Simulate a 1.5-second loading time
+        });
+    </script>
 </body>
 </html>
